@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>MelaminaCalc Pro — Cotizador de Carpintería</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Melaminas Pro — Cotizador de Carpintería</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
@@ -298,7 +298,7 @@
   <!-- Encabezado -->
   <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:3px solid #e8981a; padding-bottom:14px; margin-bottom:18px;">
     <div>
-      <div style="font-family:'DM Serif Display',serif; font-size:24px; color:#1a1410; line-height:1.1;">MelaminaCalc Pro</div>
+      <div style="font-family:'DM Serif Display',serif; font-size:24px; color:#1a1410; line-height:1.1;">Melaminas Pro</div>
       <div style="font-size:10px; color:#888; text-transform:uppercase; letter-spacing:0.1em; margin-top:3px;">Cotizador de Carpintería de Melamina</div>
     </div>
     <div style="text-align:right;">
@@ -349,7 +349,7 @@
   </div>
 
   <div style="margin-top:20px; padding-top:12px; border-top:1px solid #eee; text-align:center; font-size:10px; color:#bbb;">
-    Cotización generada con MelaminaCalc Pro — No incluye IVA salvo que se indique.
+    Cotización generada con Melaminas Pro — No incluye IVA salvo que se indique.
   </div>
 </div>
 
@@ -407,7 +407,7 @@
       <div class="card" style="display:flex; flex-direction:column; gap:14px;">
         <div class="sec-title">💵 Costos de Material</div>
         <div><label class="lbl">Precio de la lámina</label><input class="inp" type="number" id="cPrecioLamina" placeholder="0.00" step="0.01"></div>
-        <div><label class="lbl">Costo Hoja de Corte / Servicio</label><input class="inp" type="number" id="cCostoCorte" placeholder="0.00" step="0.01"></div>
+        <div><label class="lbl">Costo Servicio de Corte</label><input class="inp" type="number" id="cCostoCorte" placeholder="0.00" step="0.01"></div>
       </div>
 
       <!-- Tornillos y consumibles -->
@@ -507,7 +507,7 @@
           <div><label class="lbl">Precio unitario</label><input class="inp" type="number" id="hBisPrice" placeholder="0.00" step="0.01" oninput="actualizarAccesorios()"></div>
         </div>
         <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--muted);">
-          <span>Subtotal bisagras:</span><b style="color:var(--text);" id="stBisagras">$0.00</b>
+          <span>Subtotal bisagras:</span><b style="color:var(--text);" id="stBisagras">Bs0.00</b>
         </div>
       </div>
 
@@ -519,7 +519,7 @@
           <div><label class="lbl">Precio por par</label><input class="inp" type="number" id="hCorPrice" placeholder="0.00" step="0.01" oninput="actualizarAccesorios()"></div>
         </div>
         <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--muted);">
-          <span>Subtotal correderas:</span><b style="color:var(--text);" id="stCorrederas">$0.00</b>
+          <span>Subtotal correderas:</span><b style="color:var(--text);" id="stCorrederas">Bs0.00</b>
         </div>
       </div>
 
@@ -531,7 +531,7 @@
           <div><label class="lbl">Precio unitario</label><input class="inp" type="number" id="hJalPrice" placeholder="0.00" step="0.01" oninput="actualizarAccesorios()"></div>
         </div>
         <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--muted);">
-          <span>Subtotal jaladores:</span><b style="color:var(--text);" id="stJaladores">$0.00</b>
+          <span>Subtotal jaladores:</span><b style="color:var(--text);" id="stJaladores">Bs0.00</b>
         </div>
       </div>
 
@@ -543,14 +543,14 @@
           <div><label class="lbl">Precio unitario</label><input class="inp" type="number" id="hSopPrice" placeholder="0.00" step="0.01" oninput="actualizarAccesorios()"></div>
         </div>
         <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--muted);">
-          <span>Subtotal soportes:</span><b style="color:var(--text);" id="stSoportes">$0.00</b>
+          <span>Subtotal soportes:</span><b style="color:var(--text);" id="stSoportes">Bs0.00</b>
         </div>
       </div>
 
       <!-- Total accesorios -->
       <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
         <span style="font-size:13px; font-weight:700; color:var(--muted);">Total Herrajes</span>
-        <span style="font-size:22px; font-weight:900; color:var(--accent);" id="totalHerrajes">$0.00</span>
+        <span style="font-size:22px; font-weight:900; color:var(--accent);" id="totalHerrajes">Bs0.00</span>
       </div>
 
     </div><!-- fin herrajes -->
@@ -579,28 +579,28 @@
         <!-- Melamina -->
         <div>
           <div style="font-size:11px; font-weight:800; color:var(--accent); margin-bottom:7px; letter-spacing:0.06em;">MELAMINA Y CORTE</div>
-          <div class="bd-row"><span style="color:var(--muted);">Material melamina</span><b id="bdMelamina">$0.00</b></div>
-          <div class="bd-row"><span style="color:var(--muted);">Hoja de corte / Servicio</span><b id="bdCorte">$0.00</b></div>
-          <div class="bd-row bd-sep"><b>Subtotal materiales</b><b id="stMateriales">$0.00</b></div>
+          <div class="bd-row"><span style="color:var(--muted);">Material melamina</span><b id="bdMelamina">Bs0.00</b></div>
+          <div class="bd-row"><span style="color:var(--muted);">Hoja de corte / Servicio</span><b id="bdCorte">Bs0.00</b></div>
+          <div class="bd-row bd-sep"><b>Subtotal materiales</b><b id="stMateriales">Bs0.00</b></div>
         </div>
 
         <!-- Consumibles -->
         <div>
           <div style="font-size:11px; font-weight:800; color:var(--accent); margin-bottom:7px; letter-spacing:0.06em;">TORNILLOS Y CONSUMIBLES <span style="font-weight:400; color:var(--muted);">(+5% margen)</span></div>
-          <div class="bd-row"><span style="color:var(--muted);" id="bdLblTornillos">Tornillos (0 un.)</span><b id="bdTornillos">$0.00</b></div>
-          <div class="bd-row"><span style="color:var(--muted);">Pegamento / Silicona</span><b id="bdPegamento">$0.00</b></div>
-          <div class="bd-row"><span style="font-size:12px; color:var(--muted);">Margen de error (+5%)</span><span style="font-size:12px; color:var(--accent);" id="bdMargen">+$0.00</span></div>
-          <div class="bd-row bd-sep"><b>Subtotal consumibles</b><b id="stConsumibles">$0.00</b></div>
+          <div class="bd-row"><span style="color:var(--muted);" id="bdLblTornillos">Tornillos (0 un.)</span><b id="bdTornillos">Bs0.00</b></div>
+          <div class="bd-row"><span style="color:var(--muted);">Pegamento / Silicona</span><b id="bdPegamento">Bs0.00</b></div>
+          <div class="bd-row"><span style="font-size:12px; color:var(--muted);">Margen de error (+5%)</span><span style="font-size:12px; color:var(--accent);" id="bdMargen">+Bs0.00</span></div>
+          <div class="bd-row bd-sep"><b>Subtotal consumibles</b><b id="stConsumibles">Bs0.00</b></div>
         </div>
 
         <!-- Herrajes -->
         <div>
           <div style="font-size:11px; font-weight:800; color:var(--accent); margin-bottom:7px; letter-spacing:0.06em;">HERRAJES Y ACCESORIOS</div>
-          <div class="bd-row"><span style="color:var(--muted);">Bisagras</span><b id="bdBis">$0.00</b></div>
-          <div class="bd-row"><span style="color:var(--muted);">Correderas</span><b id="bdCor">$0.00</b></div>
-          <div class="bd-row"><span style="color:var(--muted);">Jaladores</span><b id="bdJal">$0.00</b></div>
-          <div class="bd-row"><span style="color:var(--muted);">Soportes</span><b id="bdSop">$0.00</b></div>
-          <div class="bd-row bd-sep"><b>Subtotal herrajes</b><b id="stHerrajes">$0.00</b></div>
+          <div class="bd-row"><span style="color:var(--muted);">Bisagras</span><b id="bdBis">Bs0.00</b></div>
+          <div class="bd-row"><span style="color:var(--muted);">Correderas</span><b id="bdCor">Bs0.00</b></div>
+          <div class="bd-row"><span style="color:var(--muted);">Jaladores</span><b id="bdJal">Bs0.00</b></div>
+          <div class="bd-row"><span style="color:var(--muted);">Soportes</span><b id="bdSop">Bs0.00</b></div>
+          <div class="bd-row bd-sep"><b>Subtotal herrajes</b><b id="stHerrajes">Bs0.00</b></div>
         </div>
       </div>
 
@@ -613,7 +613,7 @@
         </div>
         <div id="moInputPct"><label class="lbl">Porcentaje de utilidad (%)</label><input class="inp" type="number" id="moPct" value="30" placeholder="30" oninput="calcularTotal()"></div>
         <div id="moInputFijo" style="display:none;"><label class="lbl">Monto fijo de mano de obra</label><input class="inp" type="number" id="moFijo" placeholder="0.00" step="0.01" oninput="calcularTotal()"></div>
-        <div class="bd-row"><span style="color:var(--muted);">Mano de obra calculada</span><b id="bdManoObra">$0.00</b></div>
+        <div class="bd-row"><span style="color:var(--muted);">Mano de obra calculada</span><b id="bdManoObra">Bs0.00</b></div>
       </div>
 
       <!-- TOTAL FINAL -->
