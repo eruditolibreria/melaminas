@@ -3,53 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Melaminas Pro — Cotizador de Carpintería</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <title>MelaminaCalc Pro — Cotizador de Carpintería</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
- 
-  <script>
-    /* ============================================
-       CONFIGURACIÓN DE TAILWIND
-    ============================================ */
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            wood: {
-              950: '#0e0b08', 900: '#18140f', 800: '#23201a',
-              700: '#302b22', 600: '#46402f', 500: '#665c45',
-              400: '#8a7d66', 300: '#b0a690', 200: '#d6cfbf', 100: '#f0ece2',
-            },
-          },
-          fontFamily: {
-            display: ['"DM Serif Display"', 'serif'],
-            body: ['Nunito', 'sans-serif'],
-          }
-        }
-      }
-    }
-  </script>
- 
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
   <style>
-    /* ============================================
-       VARIABLES Y ESTILOS GLOBALES
-    ============================================ */
     :root {
-      --bg:        #0e0b08;
-      --surface:   #18140f;
-      --card:      #23201a;
-      --border:    #302b22;
-      --accent:    #e8981a;
-      --accent-lt: #f5b842;
-      --text:      #f0ece2;
-      --muted:     #8a7d66;
-      --green:     #5e9a72;
-      --red:       #c46060;
+      --bg:      #0e0b08;
+      --surface: #18140f;
+      --card:    #23201a;
+      --border:  #302b22;
+      --accent:  #e8981a;
+      --text:    #f0ece2;
+      --muted:   #8a7d66;
+      --green:   #5e9a72;
+      --red:     #c46060;
     }
- 
+
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
- 
+
     body {
       background: var(--bg);
       color: var(--text);
@@ -57,13 +30,11 @@
       min-height: 100vh;
       overflow-x: hidden;
     }
- 
-    /* Scrollbar */
+
     ::-webkit-scrollbar { width: 3px; }
     ::-webkit-scrollbar-track { background: var(--surface); }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
- 
-    /* ——— INPUTS ——— */
+
     .inp {
       background: var(--card);
       border: 1.5px solid var(--border);
@@ -72,14 +43,14 @@
       padding: 13px 15px;
       width: 100%;
       font-family: 'Nunito', sans-serif;
-      font-size: 16px; /* evita zoom en iOS */
+      font-size: 16px;
       transition: border-color 0.18s;
       appearance: none;
       -webkit-appearance: none;
     }
     .inp:focus { outline: none; border-color: var(--accent); }
     .inp::placeholder { color: var(--muted); }
- 
+
     .lbl {
       display: block;
       font-size: 11px;
@@ -89,8 +60,7 @@
       color: var(--muted);
       margin-bottom: 6px;
     }
- 
-    /* ——— BOTONES ——— */
+
     .btn-main {
       background: var(--accent);
       color: #0e0b08;
@@ -109,7 +79,7 @@
       transition: transform 0.15s, opacity 0.15s;
     }
     .btn-main:active { transform: scale(0.96); opacity: 0.88; }
- 
+
     .btn-sub {
       background: var(--card);
       color: var(--text);
@@ -127,9 +97,9 @@
       transition: transform 0.15s;
     }
     .btn-sub:active { transform: scale(0.96); }
- 
+
     .btn-del {
-      background: rgba(196, 96, 96, 0.14);
+      background: rgba(196,96,96,0.14);
       color: var(--red);
       border: 1px solid rgba(196,96,96,0.28);
       border-radius: 10px;
@@ -142,18 +112,35 @@
       transition: transform 0.15s;
     }
     .btn-del:active { transform: scale(0.93); }
- 
-    /* ——— CARDS ——— */
+
+    .btn-add-acc {
+      background: rgba(94,154,114,0.12);
+      color: var(--green);
+      border: 1px solid rgba(94,154,114,0.28);
+      border-radius: 10px;
+      padding: 9px 14px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.15s;
+    }
+    .btn-add-acc:active { transform: scale(0.96); }
+
     .card {
       background: var(--card);
       border: 1.5px solid var(--border);
       border-radius: 18px;
       padding: 18px;
     }
- 
-    /* ——— TABS ——— */
+
+    /* TABS — la clave del fix: display se gestiona SÓLO aquí */
     .tab-panel { display: none; }
     .tab-panel.active { display: flex; flex-direction: column; gap: 18px; }
+
     .tab-btn {
       flex: 1;
       padding: 11px 4px;
@@ -171,18 +158,27 @@
       white-space: nowrap;
     }
     .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
- 
-    /* ——— CANVAS ——— */
-    #canvasContainer {
-      width: 100%;
+
+    .lamina-wrap {
       border-radius: 12px;
       overflow: hidden;
       border: 1.5px solid var(--border);
       background: #1a1410;
+      margin-bottom: 10px;
     }
-    #sheetCanvas { display: block; width: 100%; height: auto; }
- 
-    /* ——— PIEZA ITEM ——— */
+    .lamina-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 10px;
+      background: rgba(255,255,255,0.04);
+      border-bottom: 1px solid var(--border);
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--muted);
+    }
+    .lamina-canvas { display: block; width: 100%; height: auto; }
+
     .piece-row {
       background: var(--surface);
       border: 1.5px solid var(--border);
@@ -194,8 +190,18 @@
       animation: fadeUp 0.22s ease forwards;
     }
     .piece-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
- 
-    /* ——— TOTAL HIGHLIGHT ——— */
+
+    .acc-row {
+      display: grid;
+      grid-template-columns: 1fr 0.55fr 0.65fr auto;
+      gap: 6px;
+      align-items: center;
+      padding: 7px 0;
+      border-bottom: 1px solid var(--border);
+      animation: fadeUp 0.2s ease forwards;
+    }
+    .acc-row:last-child { border-bottom: none; }
+
     .total-box {
       background: linear-gradient(145deg, rgba(232,152,26,0.14), rgba(232,152,26,0.06));
       border: 1.5px solid rgba(232,152,26,0.4);
@@ -203,8 +209,7 @@
       padding: 24px 20px;
       text-align: center;
     }
- 
-    /* ——— LABOR MODE BTN ——— */
+
     .mode-btn {
       flex: 1;
       padding: 12px;
@@ -216,30 +221,12 @@
       cursor: pointer;
       transition: all 0.18s;
     }
-    .mode-btn.active { background: var(--accent); color: #0e0b08; border-color: var(--accent); }
+    .mode-btn.active  { background: var(--accent); color: #0e0b08; border-color: var(--accent); }
     .mode-btn:not(.active) { background: var(--card); color: var(--muted); }
- 
-    /* ——— ANIMATIONS ——— */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(6px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; } 50% { opacity: 0.6; }
-    }
-    .toast {
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-size: 13px;
-      font-weight: 700;
-      text-align: center;
-      animation: fadeUp 0.2s ease;
-    }
-    .toast-ok  { background: rgba(94,154,114,0.15); border: 1px solid rgba(94,154,114,0.3); color: var(--green); }
-    .toast-err { background: rgba(196,96,96,0.12);  border: 1px solid rgba(196,96,96,0.28);  color: var(--red); }
-    .toast-warn{ background: rgba(232,152,26,0.12); border: 1px solid rgba(232,152,26,0.28); color: var(--accent); }
- 
-    /* ——— SECTION DIVIDER ——— */
+
+    .bd-row { display: flex; justify-content: space-between; font-size: 13px; padding: 3px 0; }
+    .bd-sep { border-top: 1px solid var(--border); padding-top: 8px; margin-top: 5px; }
+
     .sec-title {
       font-size: 10.5px;
       font-weight: 800;
@@ -248,54 +235,37 @@
       color: var(--muted);
       margin-bottom: 10px;
     }
- 
-    /* ——— BREAKDOWN ROW ——— */
-    .bd-row { display: flex; justify-content: space-between; font-size: 13px; padding: 3px 0; }
-    .bd-sep  { border-top: 1px solid var(--border); padding-top: 8px; margin-top: 5px; }
- 
-    /* ======================================================
-       ESTILOS DE IMPRESIÓN — @media print
-    ====================================================== */
+
+    .toast { border-radius: 12px; padding: 12px 14px; font-size: 13px; font-weight: 700; text-align: center; animation: fadeUp 0.2s ease; }
+    .toast-ok   { background: rgba(94,154,114,0.15);  border: 1px solid rgba(94,154,114,0.3);  color: var(--green); }
+    .toast-err  { background: rgba(196,96,96,0.12);   border: 1px solid rgba(196,96,96,0.28);  color: var(--red); }
+    .toast-warn { background: rgba(232,152,26,0.12);  border: 1px solid rgba(232,152,26,0.28); color: var(--accent); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ——— PRINT ——— */
     @media print {
       * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
- 
-      body { background: #fff !important; color: #111 !important; font-family: 'Nunito', sans-serif !important; }
- 
-      /* Ocultar toda la app */
+      body { background: #fff !important; color: #111 !important; }
       header, nav, main, #appRoot { display: none !important; }
- 
-      /* Mostrar sólo la sección de presupuesto */
       #presupuesto { display: block !important; }
- 
       @page { margin: 14mm 12mm; size: A4; }
- 
       .ptbl { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 4px; }
-      .ptbl th {
-        background: #f4f1ea !important; padding: 7px 9px;
-        font-size: 10px; font-weight: 800; text-transform: uppercase;
-        letter-spacing: 0.07em; color: #555; border-bottom: 2px solid #ddd; text-align: left;
-      }
+      .ptbl th { background: #f4f1ea !important; padding: 7px 9px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; color: #555; border-bottom: 2px solid #ddd; text-align: left; }
       .ptbl td { padding: 6px 9px; border-bottom: 1px solid #eee; }
       .ptbl tr:nth-child(even) td { background: #fafafa !important; }
- 
       .pcard { background: #f9f6f0 !important; border-radius: 8px; padding: 12px 14px; }
- 
-      .p-total {
-        background: #fff8e1 !important;
-        border: 2px solid #e8981a !important;
-        border-radius: 12px; padding: 18px; text-align: center;
-      }
+      .p-total { background: #fff8e1 !important; border: 2px solid #e8981a !important; border-radius: 12px; padding: 18px; text-align: center; }
     }
   </style>
 </head>
 <body>
- 
-<!-- ================================================
-     SECCIÓN DE PRESUPUESTO — sólo visible en @media print
-================================================ -->
+
+<!-- SECCIÓN PRESUPUESTO (solo @media print) -->
 <div id="presupuesto" style="display:none; font-family:'Nunito',sans-serif; color:#111;">
- 
-  <!-- Encabezado -->
   <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:3px solid #e8981a; padding-bottom:14px; margin-bottom:18px;">
     <div>
       <div style="font-family:'DM Serif Display',serif; font-size:24px; color:#1a1410; line-height:1.1;">MelaminaCalc Pro</div>
@@ -306,59 +276,38 @@
       <div style="font-size:11px; color:#666;">Fecha: <b id="pFecha">—</b></div>
     </div>
   </div>
- 
-  <!-- Cliente / Proyecto -->
   <div class="pcard" style="border-left:4px solid #e8981a; margin-bottom:16px;">
     <div style="font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:#aaa;">Cliente / Proyecto</div>
     <div style="font-size:17px; font-weight:800; color:#1a1410; margin-top:3px;" id="pCliente">—</div>
     <div style="font-size:13px; color:#555;" id="pProyecto">—</div>
   </div>
- 
-  <!-- Tabla de piezas -->
   <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:#555; margin-bottom:8px;">📐 Piezas de Melamina</div>
   <table class="ptbl">
-    <thead>
-      <tr>
-        <th>#</th><th>Descripción</th><th>Largo (mm)</th><th>Ancho (mm)</th>
-        <th>Cant.</th><th>Costo/u</th><th>Total</th>
-      </tr>
-    </thead>
+    <thead><tr><th>#</th><th>Descripción</th><th>Largo</th><th>Ancho</th><th>Cant.</th><th>Costo/u</th><th>Total</th></tr></thead>
     <tbody id="pPiezas"></tbody>
   </table>
- 
-  <!-- Tabla accesorios -->
   <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:#555; margin:14px 0 8px;">🔩 Herrajes y Accesorios</div>
   <table class="ptbl">
-    <thead>
-      <tr><th>Accesorio</th><th>Cantidad</th><th>Precio Unitario</th><th>Total</th></tr>
-    </thead>
+    <thead><tr><th>Accesorio</th><th>Cantidad</th><th>Precio Unit.</th><th>Total</th></tr></thead>
     <tbody id="pAccesorios"></tbody>
   </table>
- 
-  <!-- Desglose financiero -->
   <div style="margin-top:18px; border-top:2px solid #e8e4da; padding-top:14px;">
     <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:#aaa; margin-bottom:8px;">🪙 Desglose de Costos (Bs.)</div>
     <table style="width:100%; font-size:13px;" id="pDesglose"></table>
   </div>
- 
-  <!-- Total final -->
   <div class="p-total" style="margin-top:16px;">
     <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.1em; color:#888; margin-bottom:6px;">TOTAL FINAL DEL PROYECTO</div>
-    <div style="font-family:'DM Serif Display',serif; font-size:38px; color:#d97706; font-weight:900; line-height:1.1;" id="pTotal">$0.00</div>
+    <div style="font-family:'DM Serif Display',serif; font-size:38px; color:#d97706; font-weight:900; line-height:1.1;" id="pTotal">Bs. 0.00</div>
     <div style="font-size:11px; color:#999; margin-top:6px;">Precios en Bolivianos · Incluye materiales, herrajes y mano de obra</div>
   </div>
- 
   <div style="margin-top:20px; padding-top:12px; border-top:1px solid #eee; text-align:center; font-size:10px; color:#bbb;">
-    Cotización generada con MelaminaCalc Pro — Precios en Bolivianos (Bs.). No incluye IT salvo que se indique.
+    Cotización generada con MelaminaCalc Pro — Precios en Bolivianos (Bs.). No incluye IT salvo indicación.
   </div>
 </div>
- 
-<!-- ================================================
-     APP PRINCIPAL
-================================================ -->
+
+<!-- APP -->
 <div id="appRoot">
- 
-  <!-- ——— HEADER ——— -->
+
   <header style="position:sticky; top:0; z-index:50; background:var(--surface); border-bottom:1.5px solid var(--border);">
     <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px 10px;">
       <div style="display:flex; align-items:center; gap:10px;">
@@ -368,33 +317,27 @@
           <div style="font-size:9.5px; letter-spacing:0.1em; color:var(--muted); text-transform:uppercase;">COTIZADOR PRO</div>
         </div>
       </div>
-      <button onclick="abrirPDF()" class="btn-sub" style="width:auto; padding:9px 14px; font-size:12.5px; gap:5px;">
-        🖨️ PDF
-      </button>
+      <button onclick="abrirPDF()" class="btn-sub" style="width:auto; padding:9px 14px; font-size:12.5px;">🖨️ PDF</button>
     </div>
-    <!-- Tabs -->
     <nav style="display:flex; border-top:1.5px solid var(--border); overflow-x:auto;">
-      <button class="tab-btn active" id="tabBtn-conf"    onclick="irTab('conf')">⚙️&nbsp;Config</button>
-      <button class="tab-btn"        id="tabBtn-piezas"  onclick="irTab('piezas')">🪵&nbsp;Piezas</button>
+      <button class="tab-btn active" id="tabBtn-conf"     onclick="irTab('conf')">⚙️&nbsp;Config</button>
+      <button class="tab-btn"        id="tabBtn-piezas"   onclick="irTab('piezas')">🪵&nbsp;Piezas</button>
       <button class="tab-btn"        id="tabBtn-herrajes" onclick="irTab('herrajes')">🔩&nbsp;Herrajes</button>
-      <button class="tab-btn"        id="tabBtn-cotiz"   onclick="irTab('cotiz')">💰&nbsp;Total</button>
+      <button class="tab-btn"        id="tabBtn-cotiz"    onclick="irTab('cotiz')">💰&nbsp;Total</button>
     </nav>
   </header>
- 
-  <!-- ——— CONTENIDO ——— -->
-  <main style="max-width:520px; margin:0 auto; padding-bottom:40px;">
- 
-    <!-- ================================================
-         TAB: CONFIGURACIÓN
-    ================================================ -->
+
+  <main style="max-width:520px; margin:0 auto; padding-bottom:50px;">
+
+    <!-- TAB CONFIGURACIÓN -->
+    <!-- IMPORTANTE: sin display:flex aquí, el CSS .tab-panel.active lo pone -->
     <div id="panel-conf" class="tab-panel active" style="padding:20px 16px;">
- 
+
       <div>
         <div style="font-family:'DM Serif Display',serif; font-size:22px; color:var(--accent);">Configuración Base</div>
         <div style="font-size:12px; color:var(--muted); margin-top:2px;">Dimensiones y costos de la lámina principal.</div>
       </div>
- 
-      <!-- Dimensiones -->
+
       <div class="card" style="display:flex; flex-direction:column; gap:14px;">
         <div class="sec-title">📐 Dimensiones de la Lámina</div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
@@ -402,58 +345,54 @@
           <div><label class="lbl">Ancho (mm)</label><input class="inp" type="number" id="cAncho" placeholder="1220"></div>
         </div>
       </div>
- 
-      <!-- Costos -->
+
       <div class="card" style="display:flex; flex-direction:column; gap:14px;">
         <div class="sec-title">🪙 Costos de Material</div>
-        <div><label class="lbl">Precio de la lámina</label><input class="inp" type="number" id="cPrecioLamina" placeholder="0.00" step="0.01"></div>
-        <div><label class="lbl">Costo Hoja de Corte / Servicio</label><input class="inp" type="number" id="cCostoCorte" placeholder="0.00" step="0.01"></div>
+        <div><label class="lbl">Precio de la lámina (Bs.)</label><input class="inp" type="number" id="cPrecioLamina" placeholder="0.00" step="0.01"></div>
+        <div><label class="lbl">Costo Hoja de Corte / Servicio (Bs.)</label><input class="inp" type="number" id="cCostoCorte" placeholder="0.00" step="0.01"></div>
       </div>
- 
-      <!-- Tornillos y consumibles -->
+
       <div class="card" style="display:flex; flex-direction:column; gap:14px;">
         <div class="sec-title">🔩 Tornillos y Consumibles</div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
           <div><label class="lbl">Tornillos por pieza</label><input class="inp" type="number" id="cTornillosXPieza" placeholder="6"></div>
-          <div><label class="lbl">Precio tornillo (u.)</label><input class="inp" type="number" id="cPrecioTornillo" placeholder="0.05" step="0.01"></div>
+          <div><label class="lbl">Precio tornillo (Bs.)</label><input class="inp" type="number" id="cPrecioTornillo" placeholder="0.05" step="0.01"></div>
         </div>
-        <div><label class="lbl">Costo pegamento / silicona (global)</label><input class="inp" type="number" id="cCostoPegamento" placeholder="0.00" step="0.01"></div>
-        <!-- Aviso margen -->
+        <div><label class="lbl">Costo pegamento / silicona (Bs.)</label><input class="inp" type="number" id="cCostoPegamento" placeholder="0.00" step="0.01"></div>
         <div style="background:rgba(232,152,26,0.09); border:1px solid rgba(232,152,26,0.22); border-radius:10px; padding:10px 12px; display:flex; gap:8px; align-items:flex-start;">
           <span style="font-size:16px; flex-shrink:0;">ℹ️</span>
-          <span style="font-size:12px; color:var(--muted);">Se aplicará un <b style="color:var(--accent);">+5%</b> de margen de error automático sobre tornillos y pegamento.</span>
+          <span style="font-size:12px; color:var(--muted);">Se aplica <b style="color:var(--accent);">+5%</b> de margen de error automático sobre tornillos y pegamento.</span>
         </div>
       </div>
- 
+
       <button class="btn-main" onclick="guardarConfig()">💾 Guardar Configuración</button>
       <div id="toastConf"></div>
- 
-    </div><!-- fin conf -->
- 
-    <!-- ================================================
-         TAB: PIEZAS
-    ================================================ -->
+
+    </div>
+
+    <!-- TAB PIEZAS -->
     <div id="panel-piezas" class="tab-panel" style="padding:20px 16px;">
- 
+
       <div>
         <div style="font-family:'DM Serif Display',serif; font-size:22px; color:var(--accent);">Cortes y Piezas</div>
-        <div style="font-size:12px; color:var(--muted); margin-top:2px;">Visualiza el aprovechamiento de la lámina en tiempo real.</div>
+        <div style="font-size:12px; color:var(--muted); margin-top:2px;">Las piezas se distribuyen en una o más láminas automáticamente.</div>
       </div>
- 
-      <!-- Canvas -->
+
       <div>
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
           <div class="sec-title" style="margin-bottom:0;">Vista de Corte</div>
-          <div style="font-size:11px; font-weight:800; background:var(--card); border:1px solid var(--border); border-radius:8px; padding:3px 9px; color:var(--muted);" id="lblUso">0% usado</div>
+          <div style="display:flex; gap:6px;">
+            <span style="font-size:11px; font-weight:800; background:var(--card); border:1px solid var(--border); border-radius:8px; padding:3px 9px; color:var(--muted);" id="lblLaminas">0 láminas</span>
+            <span style="font-size:11px; font-weight:800; background:var(--card); border:1px solid var(--border); border-radius:8px; padding:3px 9px; color:var(--muted);" id="lblUso">0% prom.</span>
+          </div>
         </div>
-        <div id="canvasContainer"><canvas id="sheetCanvas"></canvas></div>
-        <div style="display:flex; justify-content:space-between; padding:4px 2px 0;">
+        <div id="canvasesContainer"></div>
+        <div style="display:flex; justify-content:space-between; padding:2px 2px 0;">
           <span style="font-size:11px; color:var(--muted);" id="lblDim">—</span>
           <span style="font-size:11px; color:var(--muted);" id="lblCant">0 piezas</span>
         </div>
       </div>
- 
-      <!-- Formulario agregar pieza -->
+
       <div class="card" style="display:flex; flex-direction:column; gap:14px;">
         <div class="sec-title">➕ Agregar Pieza</div>
         <div><label class="lbl">Etiqueta / Nombre</label><input class="inp" type="text" id="pLabel" placeholder="Ej: Puerta, Lateral, Fondo..."></div>
@@ -465,8 +404,7 @@
         <div id="toastPieza"></div>
         <button class="btn-main" onclick="agregarPieza()">➕ Agregar Pieza</button>
       </div>
- 
-      <!-- Lista de piezas -->
+
       <div>
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
           <div class="sec-title" style="margin-bottom:0;">Piezas Agregadas</div>
@@ -474,8 +412,7 @@
         </div>
         <div id="listaPiezas" style="display:flex; flex-direction:column; gap:8px;"></div>
       </div>
- 
-      <!-- Resumen tornillos -->
+
       <div class="card" id="resumenTornillos" style="display:none; flex-direction:row; align-items:center; justify-content:space-between;">
         <div style="display:flex; align-items:center; gap:8px;">
           <span style="font-size:18px;">🔩</span>
@@ -486,213 +423,226 @@
           <div style="font-size:11px; color:var(--muted);">unidades</div>
         </div>
       </div>
- 
-    </div><!-- fin piezas -->
- 
-    <!-- ================================================
-         TAB: HERRAJES
-    ================================================ -->
+
+    </div>
+
+    <!-- TAB HERRAJES -->
     <div id="panel-herrajes" class="tab-panel" style="padding:20px 16px;">
- 
+
       <div>
         <div style="font-family:'DM Serif Display',serif; font-size:22px; color:var(--accent);">Herrajes y Accesorios</div>
-        <div style="font-size:12px; color:var(--muted); margin-top:2px;">Registra cantidades y precios de cada accesorio.</div>
+        <div style="font-size:12px; color:var(--muted); margin-top:2px;">Los cambios se calculan automáticamente en el total.</div>
       </div>
- 
+
       <!-- Bisagras -->
       <div class="card" style="display:flex; flex-direction:column; gap:12px;">
         <div style="display:flex; align-items:center; gap:8px;"><span style="font-size:20px;">🔧</span><b style="font-size:14px;">Bisagras</b></div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-          <div><label class="lbl">Cantidad</label><input class="inp" type="number" id="hBisQty" placeholder="0" value="0" min="0" oninput="actualizarAccesorios()"></div>
-          <div><label class="lbl">Precio unitario</label><input class="inp" type="number" id="hBisPrice" placeholder="0.00" step="0.01" oninput="actualizarAccesorios()"></div>
+          <div><label class="lbl">Cantidad</label><input class="inp" type="number" id="hBisQty" placeholder="0" value="0" min="0" oninput="onAccChange()"></div>
+          <div><label class="lbl">Precio unit. (Bs.)</label><input class="inp" type="number" id="hBisPrice" placeholder="0.00" step="0.01" oninput="onAccChange()"></div>
         </div>
         <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--muted);">
-          <span>Subtotal bisagras:</span><b style="color:var(--text);" id="stBisagras">$0.00</b>
+          <span>Subtotal:</span><b style="color:var(--text);" id="stBisagras">Bs. 0.00</b>
         </div>
       </div>
- 
+
       <!-- Correderas -->
       <div class="card" style="display:flex; flex-direction:column; gap:12px;">
         <div style="display:flex; align-items:center; gap:8px;"><span style="font-size:20px;">↔️</span><b style="font-size:14px;">Correderas</b></div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-          <div><label class="lbl">Pares</label><input class="inp" type="number" id="hCorQty" placeholder="0" value="0" min="0" oninput="actualizarAccesorios()"></div>
-          <div><label class="lbl">Precio por par</label><input class="inp" type="number" id="hCorPrice" placeholder="0.00" step="0.01" oninput="actualizarAccesorios()"></div>
+          <div><label class="lbl">Pares</label><input class="inp" type="number" id="hCorQty" placeholder="0" value="0" min="0" oninput="onAccChange()"></div>
+          <div><label class="lbl">Precio por par (Bs.)</label><input class="inp" type="number" id="hCorPrice" placeholder="0.00" step="0.01" oninput="onAccChange()"></div>
         </div>
         <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--muted);">
-          <span>Subtotal correderas:</span><b style="color:var(--text);" id="stCorrederas">$0.00</b>
+          <span>Subtotal:</span><b style="color:var(--text);" id="stCorrederas">Bs. 0.00</b>
         </div>
       </div>
- 
+
       <!-- Jaladores -->
       <div class="card" style="display:flex; flex-direction:column; gap:12px;">
         <div style="display:flex; align-items:center; gap:8px;"><span style="font-size:20px;">🪄</span><b style="font-size:14px;">Jaladores / Manijas</b></div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-          <div><label class="lbl">Cantidad</label><input class="inp" type="number" id="hJalQty" placeholder="0" value="0" min="0" oninput="actualizarAccesorios()"></div>
-          <div><label class="lbl">Precio unitario</label><input class="inp" type="number" id="hJalPrice" placeholder="0.00" step="0.01" oninput="actualizarAccesorios()"></div>
+          <div><label class="lbl">Cantidad</label><input class="inp" type="number" id="hJalQty" placeholder="0" value="0" min="0" oninput="onAccChange()"></div>
+          <div><label class="lbl">Precio unit. (Bs.)</label><input class="inp" type="number" id="hJalPrice" placeholder="0.00" step="0.01" oninput="onAccChange()"></div>
         </div>
         <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--muted);">
-          <span>Subtotal jaladores:</span><b style="color:var(--text);" id="stJaladores">$0.00</b>
+          <span>Subtotal:</span><b style="color:var(--text);" id="stJaladores">Bs. 0.00</b>
         </div>
       </div>
- 
+
       <!-- Soportes -->
       <div class="card" style="display:flex; flex-direction:column; gap:12px;">
         <div style="display:flex; align-items:center; gap:8px;"><span style="font-size:20px;">📌</span><b style="font-size:14px;">Soportes / Pines</b></div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-          <div><label class="lbl">Cantidad</label><input class="inp" type="number" id="hSopQty" placeholder="0" value="0" min="0" oninput="actualizarAccesorios()"></div>
-          <div><label class="lbl">Precio unitario</label><input class="inp" type="number" id="hSopPrice" placeholder="0.00" step="0.01" oninput="actualizarAccesorios()"></div>
+          <div><label class="lbl">Cantidad</label><input class="inp" type="number" id="hSopQty" placeholder="0" value="0" min="0" oninput="onAccChange()"></div>
+          <div><label class="lbl">Precio unit. (Bs.)</label><input class="inp" type="number" id="hSopPrice" placeholder="0.00" step="0.01" oninput="onAccChange()"></div>
         </div>
         <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--muted);">
-          <span>Subtotal soportes:</span><b style="color:var(--text);" id="stSoportes">$0.00</b>
+          <span>Subtotal:</span><b style="color:var(--text);" id="stSoportes">Bs. 0.00</b>
         </div>
       </div>
- 
-      <!-- Total accesorios -->
-      <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
-        <span style="font-size:13px; font-weight:700; color:var(--muted);">Total Herrajes</span>
-        <span style="font-size:22px; font-weight:900; color:var(--accent);" id="totalHerrajes">$0.00</span>
+
+      <!-- Láminas de Fondos (NUEVO) -->
+      <div class="card" style="display:flex; flex-direction:column; gap:12px;">
+        <div style="display:flex; align-items:center; gap:8px;"><span style="font-size:20px;">🪵</span><b style="font-size:14px;">Láminas de Fondos</b></div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div><label class="lbl">Cant. de láminas</label><input class="inp" type="number" id="hFondQty" placeholder="0" value="0" min="0" oninput="onAccChange()"></div>
+          <div><label class="lbl">Costo por lámina (Bs.)</label><input class="inp" type="number" id="hFondPrice" placeholder="0.00" step="0.01" oninput="onAccChange()"></div>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--muted);">
+          <span>Subtotal fondos:</span><b style="color:var(--text);" id="stFondos">Bs. 0.00</b>
+        </div>
       </div>
- 
-    </div><!-- fin herrajes -->
- 
-    <!-- ================================================
-         TAB: COTIZACIÓN
-    ================================================ -->
+
+      <!-- Otros Accesorios (NUEVO) -->
+      <div class="card" style="display:flex; flex-direction:column; gap:14px;">
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <div style="display:flex; align-items:center; gap:8px;"><span style="font-size:20px;">📦</span><b style="font-size:14px;">Otros Accesorios</b></div>
+          <button class="btn-add-acc" onclick="agregarOtroAcc()">＋ Añadir</button>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 0.55fr 0.65fr auto; gap:6px; padding-bottom:4px; border-bottom:1px solid var(--border);">
+          <span class="lbl" style="margin-bottom:0; align-self:center;">Nombre</span>
+          <span class="lbl" style="margin-bottom:0; align-self:center;">Cant.</span>
+          <span class="lbl" style="margin-bottom:0; align-self:center;">Precio Bs.</span>
+          <span></span>
+        </div>
+        <div id="listaOtrosAcc" style="display:flex; flex-direction:column; min-height:10px;">
+          <div id="emptyOtros" style="text-align:center; padding:12px 0; color:var(--muted); font-size:12px;">Sin accesorios extra</div>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--muted); border-top:1px solid var(--border); padding-top:10px;">
+          <span>Subtotal otros:</span><b style="color:var(--text);" id="stOtrosAcc">Bs. 0.00</b>
+        </div>
+      </div>
+
+      <!-- Total herrajes -->
+      <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:13px; font-weight:700; color:var(--muted);">Total Herrajes y Accesorios</span>
+        <span style="font-size:22px; font-weight:900; color:var(--accent);" id="totalHerrajes">Bs. 0.00</span>
+      </div>
+
+    </div>
+
+    <!-- TAB COTIZACIÓN -->
     <div id="panel-cotiz" class="tab-panel" style="padding:20px 16px;">
- 
+
       <div>
         <div style="font-family:'DM Serif Display',serif; font-size:22px; color:var(--accent);">Cotización Final</div>
         <div style="font-size:12px; color:var(--muted); margin-top:2px;">Resumen completo de costos del proyecto.</div>
       </div>
- 
-      <!-- Datos cliente -->
+
       <div class="card" style="display:flex; flex-direction:column; gap:14px;">
         <div class="sec-title">👤 Datos del Cliente</div>
         <div><label class="lbl">Nombre del cliente</label><input class="inp" type="text" id="cCliente" placeholder="Nombre completo..."></div>
         <div><label class="lbl">Descripción del proyecto</label><input class="inp" type="text" id="cProyecto" placeholder="Ej: Closet, cocina integral..."></div>
       </div>
- 
-      <!-- Desglose -->
+
       <div class="card" style="display:flex; flex-direction:column; gap:16px;">
         <div class="sec-title">📊 Desglose de Costos</div>
- 
-        <!-- Melamina -->
+
         <div>
           <div style="font-size:11px; font-weight:800; color:var(--accent); margin-bottom:7px; letter-spacing:0.06em;">MELAMINA Y CORTE</div>
-          <div class="bd-row"><span style="color:var(--muted);">Material melamina</span><b id="bdMelamina">$0.00</b></div>
-          <div class="bd-row"><span style="color:var(--muted);">Hoja de corte / Servicio</span><b id="bdCorte">$0.00</b></div>
-          <div class="bd-row bd-sep"><b>Subtotal materiales</b><b id="stMateriales">$0.00</b></div>
+          <div class="bd-row"><span style="color:var(--muted);" id="bdLblMelamina">Material melamina</span><b id="bdMelamina">Bs. 0.00</b></div>
+          <div class="bd-row"><span style="color:var(--muted);">Hoja de corte / Servicio</span><b id="bdCorte">Bs. 0.00</b></div>
+          <div class="bd-row bd-sep"><b>Subtotal materiales</b><b id="stMateriales">Bs. 0.00</b></div>
         </div>
- 
-        <!-- Consumibles -->
+
         <div>
-          <div style="font-size:11px; font-weight:800; color:var(--accent); margin-bottom:7px; letter-spacing:0.06em;">TORNILLOS Y CONSUMIBLES <span style="font-weight:400; color:var(--muted);">(+5% margen)</span></div>
-          <div class="bd-row"><span style="color:var(--muted);" id="bdLblTornillos">Tornillos (0 un.)</span><b id="bdTornillos">$0.00</b></div>
-          <div class="bd-row"><span style="color:var(--muted);">Pegamento / Silicona</span><b id="bdPegamento">$0.00</b></div>
-          <div class="bd-row"><span style="font-size:12px; color:var(--muted);">Margen de error (+5%)</span><span style="font-size:12px; color:var(--accent);" id="bdMargen">+$0.00</span></div>
-          <div class="bd-row bd-sep"><b>Subtotal consumibles</b><b id="stConsumibles">$0.00</b></div>
+          <div style="font-size:11px; font-weight:800; color:var(--accent); margin-bottom:7px; letter-spacing:0.06em;">
+            TORNILLOS Y CONSUMIBLES <span style="font-weight:400; color:var(--muted);">(+5% margen)</span>
+          </div>
+          <div class="bd-row"><span style="color:var(--muted);" id="bdLblTornillos">Tornillos (0 un.)</span><b id="bdTornillos">Bs. 0.00</b></div>
+          <div class="bd-row"><span style="color:var(--muted);">Pegamento / Silicona</span><b id="bdPegamento">Bs. 0.00</b></div>
+          <div class="bd-row"><span style="font-size:12px; color:var(--muted);">Margen de error (+5%)</span><span style="font-size:12px; color:var(--accent);" id="bdMargen">+Bs. 0.00</span></div>
+          <div class="bd-row bd-sep"><b>Subtotal consumibles</b><b id="stConsumibles">Bs. 0.00</b></div>
         </div>
- 
-        <!-- Herrajes -->
+
         <div>
           <div style="font-size:11px; font-weight:800; color:var(--accent); margin-bottom:7px; letter-spacing:0.06em;">HERRAJES Y ACCESORIOS</div>
-          <div class="bd-row"><span style="color:var(--muted);">Bisagras</span><b id="bdBis">$0.00</b></div>
-          <div class="bd-row"><span style="color:var(--muted);">Correderas</span><b id="bdCor">$0.00</b></div>
-          <div class="bd-row"><span style="color:var(--muted);">Jaladores</span><b id="bdJal">$0.00</b></div>
-          <div class="bd-row"><span style="color:var(--muted);">Soportes</span><b id="bdSop">$0.00</b></div>
-          <div class="bd-row bd-sep"><b>Subtotal herrajes</b><b id="stHerrajes">$0.00</b></div>
+          <div class="bd-row"><span style="color:var(--muted);">Bisagras</span><b id="bdBis">Bs. 0.00</b></div>
+          <div class="bd-row"><span style="color:var(--muted);">Correderas</span><b id="bdCor">Bs. 0.00</b></div>
+          <div class="bd-row"><span style="color:var(--muted);">Jaladores</span><b id="bdJal">Bs. 0.00</b></div>
+          <div class="bd-row"><span style="color:var(--muted);">Soportes</span><b id="bdSop">Bs. 0.00</b></div>
+          <div class="bd-row"><span style="color:var(--muted);">Láminas de fondos</span><b id="bdFond">Bs. 0.00</b></div>
+          <div class="bd-row"><span style="color:var(--muted);">Otros accesorios</span><b id="bdOtros">Bs. 0.00</b></div>
+          <div class="bd-row bd-sep"><b>Subtotal herrajes</b><b id="stHerrajes">Bs. 0.00</b></div>
         </div>
       </div>
- 
-      <!-- Mano de obra -->
+
       <div class="card" style="display:flex; flex-direction:column; gap:14px;">
         <div class="sec-title">👷 Mano de Obra / Utilidad</div>
         <div style="display:flex; gap:8px;">
-          <button class="mode-btn active" id="modePct" onclick="setModoMO('pct')">% Porcentaje</button>
-          <button class="mode-btn"        id="modeFijo" onclick="setModoMO('fijo')">$ Monto Fijo</button>
+          <button class="mode-btn active" id="modePct"  onclick="setModoMO('pct')">% Porcentaje</button>
+          <button class="mode-btn"        id="modeFijo" onclick="setModoMO('fijo')">Bs. Monto Fijo</button>
         </div>
-        <div id="moInputPct"><label class="lbl">Porcentaje de utilidad (%)</label><input class="inp" type="number" id="moPct" value="30" placeholder="30" oninput="calcularTotal()"></div>
-        <div id="moInputFijo" style="display:none;"><label class="lbl">Monto fijo de mano de obra</label><input class="inp" type="number" id="moFijo" placeholder="0.00" step="0.01" oninput="calcularTotal()"></div>
-        <div class="bd-row"><span style="color:var(--muted);">Mano de obra calculada</span><b id="bdManoObra">$0.00</b></div>
+        <div id="moInputPct">
+          <label class="lbl">Porcentaje de utilidad (%)</label>
+          <input class="inp" type="number" id="moPct" value="30" placeholder="30" oninput="calcularTotal()">
+        </div>
+        <div id="moInputFijo" style="display:none;">
+          <label class="lbl">Monto fijo de mano de obra (Bs.)</label>
+          <input class="inp" type="number" id="moFijo" placeholder="0.00" step="0.01" oninput="calcularTotal()">
+        </div>
+        <div class="bd-row"><span style="color:var(--muted);">Mano de obra calculada</span><b id="bdManoObra">Bs. 0.00</b></div>
       </div>
- 
-      <!-- TOTAL FINAL -->
+
       <div class="total-box">
         <div style="font-size:11px; font-weight:800; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-bottom:6px;">TOTAL FINAL DEL PROYECTO</div>
-        <div style="font-family:'DM Serif Display',serif; font-size:48px; color:var(--accent); line-height:1.05;" id="granTotal">$0.00</div>
-        <div style="font-size:12px; color:var(--muted); margin-top:6px;">Precios en Bolivianos · Incluye materiales, herrajes y mano de obra</div>
+        <div style="font-family:'DM Serif Display',serif; font-size:48px; color:var(--accent); line-height:1.05;" id="granTotal">Bs. 0.00</div>
+        <div style="font-size:12px; color:var(--muted); margin-top:6px;">Precios en Bolivianos · Materiales + Herrajes + Mano de Obra</div>
       </div>
- 
-      <button class="btn-sub" onclick="calcularTotal()" style="width:100%;">🔄 Recalcular Todo</button>
+
+      <!-- El onclick llama directamente a calcularTotal() — es lo que lo hace funcionar -->
+      <button class="btn-sub" style="width:100%;" onclick="calcularTotal()">🔄 Recalcular Todo</button>
       <button class="btn-main" onclick="abrirPDF()">📄 Exportar Presupuesto PDF</button>
- 
-    </div><!-- fin cotiz -->
- 
+
+    </div>
+
   </main>
-</div><!-- fin appRoot -->
- 
-<!-- ================================================
-     JAVASCRIPT — LÓGICA PRINCIPAL
-================================================ -->
+</div>
+
 <script>
   /* ============================================================
      ESTADO GLOBAL
   ============================================================ */
- 
-  // Configuración de la lámina y costos
   let cfg = {
-    largo: 2440,
-    ancho: 1220,
-    precioLamina: 0,
-    costoCorte: 0,
-    tornillosXPieza: 6,
-    precioTornillo: 0,
-    costoPegamento: 0,
+    largo: 2440, ancho: 1220,
+    precioLamina: 0, costoCorte: 0,
+    tornillosXPieza: 6, precioTornillo: 0, costoPegamento: 0,
   };
- 
-  // Piezas agregadas
-  // Cada grupo: { id, label, largo, ancho, cant, color, placements:[], costUnit, costTotal }
+
+  // Grupos de piezas: { id, label, largo, ancho, cant, color, placements, costUnit, costTotal }
   let piezas = [];
- 
-  // Estantes para el algoritmo shelf packing
-  let estantes = [];
- 
-  // Modo mano de obra: 'pct' o 'fijo'
+
+  // Láminas: cada una es { estantes: [{y, alto, usadoX}] }
+  let laminas = [];
+
+  // Modo mano de obra
   let modoMO = 'pct';
- 
-  // Paleta de colores para piezas
+
+  // Otros accesorios libres: [{ id, nombre, qty, price }]
+  let otrosAcc = [];
+
   const COLORES = [
     '#e8981a','#5e9a72','#5a7ec4','#c46b8a','#56b8bc',
     '#b8783a','#8a5ec4','#c4a040','#4a8a72','#c45050',
-    '#3a8ab0','#b06030','#6a50c0','#50a068','#c05050'
+    '#3a8ab0','#b06030','#6a50c0','#50a068','#c05668',
   ];
- 
+
   /* ============================================================
-     GESTIÓN DE TABS
+     TABS
   ============================================================ */
- 
-  /**
-   * Cambia al tab indicado.
-   * @param {string} id - 'conf' | 'piezas' | 'herrajes' | 'cotiz'
-   */
   function irTab(id) {
-    // Ocultar todos
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
- 
     document.getElementById('panel-' + id).classList.add('active');
     document.getElementById('tabBtn-' + id).classList.add('active');
- 
-    // Acciones secundarias al cambiar de tab
-    if (id === 'cotiz') calcularTotal();
-    if (id === 'piezas') setTimeout(dibujarCanvas, 40);
+    if (id === 'cotiz')   calcularTotal();
+    if (id === 'piezas')  setTimeout(dibujarTodosCanvas, 40);
   }
- 
+
   /* ============================================================
-     CONFIGURACIÓN — guardar y cargar desde localStorage
+     CONFIGURACIÓN
   ============================================================ */
- 
-  /** Guarda la configuración en localStorage */
   function guardarConfig() {
     cfg = {
       largo:           parseFloat(document.getElementById('cLargo').value)          || 2440,
@@ -703,399 +653,459 @@
       precioTornillo:  parseFloat(document.getElementById('cPrecioTornillo').value)  || 0,
       costoPegamento:  parseFloat(document.getElementById('cCostoPegamento').value)  || 0,
     };
- 
     localStorage.setItem('mc_config', JSON.stringify(cfg));
- 
-    // Recalcular costos de piezas existentes
-    recalcCostosPiezas();
-    dibujarCanvas();
- 
-    mostrarToast('toastConf', '✓ Configuración guardada', 'ok');
+    reconstruirPlacements();
+    dibujarTodosCanvas();
+    calcularTotal();
+    mostrarToast('toastConf', '✓ Configuración guardada y recalculada', 'ok');
   }
- 
-  /** Carga la configuración desde localStorage y rellena los inputs */
+
   function cargarConfig() {
-    const saved = localStorage.getItem('mc_config');
-    if (saved) cfg = { ...cfg, ...JSON.parse(saved) };
- 
+    const s = localStorage.getItem('mc_config');
+    if (s) cfg = { ...cfg, ...JSON.parse(s) };
+    const set = (id, v) => { document.getElementById(id).value = v || ''; };
     document.getElementById('cLargo').value           = cfg.largo;
     document.getElementById('cAncho').value           = cfg.ancho;
-    document.getElementById('cPrecioLamina').value    = cfg.precioLamina  || '';
-    document.getElementById('cCostoCorte').value      = cfg.costoCorte    || '';
+    set('cPrecioLamina',    cfg.precioLamina);
+    set('cCostoCorte',      cfg.costoCorte);
     document.getElementById('cTornillosXPieza').value = cfg.tornillosXPieza;
-    document.getElementById('cPrecioTornillo').value  = cfg.precioTornillo || '';
-    document.getElementById('cCostoPegamento').value  = cfg.costoPegamento || '';
+    set('cPrecioTornillo',  cfg.precioTornillo);
+    set('cCostoPegamento',  cfg.costoPegamento);
   }
- 
+
   /* ============================================================
-     ALGORITMO SHELF PACKING (estante/bandeja)
+     ALGORITMO MULTI-LÁMINA — Shelf Packing
+     Si una pieza no cabe en ninguna lámina existente,
+     se abre automáticamente una lámina nueva.
   ============================================================ */
- 
+
   /**
-   * Busca posición libre para una pieza usando el algoritmo de estantes.
-   * Devuelve { x, y } si hay espacio, o null si no cabe.
-   * @param {number} pw - Largo de la pieza en mm
-   * @param {number} ph - Ancho de la pieza en mm
-   * @returns {{ x: number, y: number } | null}
+   * Intenta colocar una pieza en la lámina dada.
+   * Prueba ambas orientaciones (original y rotada).
+   * @returns {{ x, y, pw, ph } | null}
    */
-  function buscarPosicion(pw, ph) {
-    const { largo, ancho } = cfg; // dimensiones de la lámina
- 
-    // Si la pieza no cabe ni rotada, rechazar
-    if ((pw > largo || ph > ancho) && (ph > largo || pw > ancho)) return null;
-    // Si cabe rotada, rotar
-    if (pw > largo && ph <= largo) [pw, ph] = [ph, pw];
-    if (ph > ancho && pw <= ancho) [pw, ph] = [ph, pw];
-    // Verificación final
-    if (pw > largo || ph > ancho) return null;
- 
-    // Intentar colocar en estante existente
-    for (let est of estantes) {
-      if (ph <= est.alto && est.usadoX + pw <= largo) {
-        const pos = { x: est.usadoX, y: est.y };
-        est.usadoX += pw;
-        return pos;
-      }
-    }
- 
-    // Crear nuevo estante
-    const baseY = estantes.reduce((acc, e) => Math.max(acc, e.y + e.alto), 0);
-    if (baseY + ph > ancho) return null; // Sin espacio vertical
- 
-    const nuevoEstante = { y: baseY, alto: ph, usadoX: pw };
-    estantes.push(nuevoEstante);
-    return { x: 0, y: baseY };
-  }
- 
-  /**
-   * Reconstruye todos los posicionamientos de piezas desde cero.
-   * Se llama cuando se elimina una pieza o cambia la configuración.
-   */
-  function reconstruirPlacements() {
-    estantes = [];
-    const areaLamina = cfg.largo * cfg.ancho;
- 
-    for (let grupo of piezas) {
-      grupo.placements = [];
-      for (let i = 0; i < grupo.cant; i++) {
-        const pos = buscarPosicion(grupo.largo, grupo.ancho);
-        if (pos) grupo.placements.push(pos);
-      }
-      grupo.costUnit  = areaLamina > 0
-        ? (grupo.largo * grupo.ancho / areaLamina) * cfg.precioLamina
-        : 0;
-      grupo.costTotal = grupo.costUnit * grupo.placements.length;
-    }
-  }
- 
-  /** Recalcula sólo los costos sin mover piezas (al cambiar precio de lámina) */
-  function recalcCostosPiezas() {
-    const areaLamina = cfg.largo * cfg.ancho;
-    for (let grupo of piezas) {
-      grupo.costUnit  = areaLamina > 0
-        ? (grupo.largo * grupo.ancho / areaLamina) * cfg.precioLamina
-        : 0;
-      grupo.costTotal = grupo.costUnit * grupo.placements.length;
-    }
-    renderizarPiezas();
-  }
- 
-  /* ============================================================
-     DIBUJAR CANVAS
-  ============================================================ */
- 
-  /** Dibuja la lámina y todas las piezas en el canvas. */
-  function dibujarCanvas() {
-    const canvas = document.getElementById('sheetCanvas');
-    const ctx    = canvas.getContext('2d');
-    const cont   = document.getElementById('canvasContainer');
-    const dpr    = window.devicePixelRatio || 1;
- 
-    const { largo, ancho } = cfg;
-    const dispW = cont.clientWidth;
-    const dispH = Math.round((ancho / largo) * dispW);
-    const escala = dispW / largo;
- 
-    // Resolución real del canvas (para pantallas retina)
-    canvas.width        = Math.round(dispW * dpr);
-    canvas.height       = Math.round(dispH * dpr);
-    canvas.style.width  = dispW + 'px';
-    canvas.style.height = dispH + 'px';
-    ctx.scale(dpr, dpr);
- 
-    // ——— Fondo de la lámina ———
-    ctx.fillStyle = '#1c1610';
-    ctx.fillRect(0, 0, dispW, dispH);
- 
-    // ——— Grid sutil ———
-    ctx.strokeStyle = 'rgba(255,255,255,0.035)';
-    ctx.lineWidth = 0.5;
-    const paso = 100 * escala; // cada 100 mm
-    for (let x = 0; x < dispW; x += paso) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,dispH); ctx.stroke(); }
-    for (let y = 0; y < dispH; y += paso) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(dispW,y); ctx.stroke(); }
- 
-    // ——— Dibujar piezas ———
-    let numGlobal = 1;
-    piezas.forEach((grupo, gi) => {
-      const color = grupo.color;
- 
-      grupo.placements.forEach(pos => {
-        const px = pos.x * escala;
-        const py = pos.y * escala;
-        const pw = grupo.largo * escala;
-        const ph = grupo.ancho * escala;
- 
-        // Relleno
-        ctx.fillStyle = color + 'bb';
-        ctx.fillRect(px + 1, py + 1, pw - 2, ph - 2);
- 
-        // Borde
-        ctx.strokeStyle = color;
-        ctx.lineWidth = 1.5;
-        ctx.strokeRect(px + 1, py + 1, pw - 2, ph - 2);
- 
-        // Número central
-        const fz = Math.max(9, Math.min(16, pw / 4, ph / 2.5));
-        ctx.fillStyle = 'rgba(255,255,255,0.95)';
-        ctx.font = `bold ${fz}px Nunito, sans-serif`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(String(numGlobal), px + pw / 2, py + ph / 2 - (pw > 50 && ph > 30 ? fz * 0.55 : 0));
- 
-        // Dimensiones si hay espacio
-        if (pw > 52 && ph > 32) {
-          ctx.font = `${Math.max(7, fz - 3)}px Nunito, sans-serif`;
-          ctx.fillStyle = 'rgba(255,255,255,0.65)';
-          ctx.fillText(`${grupo.largo}×${grupo.ancho}`, px + pw / 2, py + ph / 2 + fz * 0.55);
+  function colocarEnLamina(lam, pw, ph) {
+    const L = cfg.largo, A = cfg.ancho;
+    const intentos = [[pw, ph]];
+    if (pw !== ph) intentos.push([ph, pw]); // orientación rotada
+
+    for (const [w, h] of intentos) {
+      if (w > L || h > A) continue;
+      // Buscar estante con hueco
+      for (const est of lam.estantes) {
+        if (h <= est.alto && est.usadoX + w <= L) {
+          const pos = { x: est.usadoX, y: est.y, pw: w, ph: h };
+          est.usadoX += w;
+          return pos;
         }
- 
-        numGlobal++;
-      });
-    });
- 
-    // ——— Borde de la lámina ———
-    ctx.strokeStyle = '#e8981a';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(1, 1, dispW - 2, dispH - 2);
- 
-    // ——— Actualizar etiquetas ———
-    actualizarEstadisticasCanvas();
-  }
- 
-  /** Actualiza las etiquetas de uso, dimensiones y cantidad de piezas. */
-  function actualizarEstadisticasCanvas() {
-    const areaLamina = cfg.largo * cfg.ancho;
-    let areaUsada = 0, totalInstancias = 0;
- 
-    for (let g of piezas) {
-      areaUsada       += g.largo * g.ancho * g.placements.length;
-      totalInstancias += g.placements.length;
+      }
+      // Nuevo estante
+      const baseY = lam.estantes.reduce((acc, e) => Math.max(acc, e.y + e.alto), 0);
+      if (baseY + h <= A) {
+        lam.estantes.push({ y: baseY, alto: h, usadoX: w });
+        return { x: 0, y: baseY, pw: w, ph: h };
+      }
     }
- 
-    const pct = areaLamina > 0 ? Math.round((areaUsada / areaLamina) * 100) : 0;
-    document.getElementById('lblUso').textContent   = `${pct}% usado`;
-    document.getElementById('lblDim').textContent   = `${cfg.largo} × ${cfg.ancho} mm`;
-    document.getElementById('lblCant').textContent  = `${totalInstancias} pieza${totalInstancias !== 1 ? 's' : ''}`;
+    return null;
   }
- 
+
+  /** Reconstruye todos los placements desde cero (al borrar pieza o cambiar config). */
+  function reconstruirPlacements() {
+    laminas = [];
+    const areaLam = cfg.largo * cfg.ancho;
+
+    for (const g of piezas) {
+      g.placements = [];
+      for (let i = 0; i < g.cant; i++) {
+        let pos = null;
+        // Buscar en láminas existentes
+        for (let li = 0; li < laminas.length; li++) {
+          pos = colocarEnLamina(laminas[li], g.largo, g.ancho);
+          if (pos) { g.placements.push({ sheetIdx: li, ...pos }); break; }
+        }
+        // Nueva lámina si no hubo espacio
+        if (!pos) {
+          const nueva = { estantes: [] };
+          laminas.push(nueva);
+          const li = laminas.length - 1;
+          pos = colocarEnLamina(nueva, g.largo, g.ancho);
+          if (pos) g.placements.push({ sheetIdx: li, ...pos });
+        }
+      }
+      g.costUnit  = areaLam > 0 ? (g.largo * g.ancho / areaLam) * cfg.precioLamina : 0;
+      g.costTotal = g.costUnit * g.placements.length;
+    }
+  }
+
   /* ============================================================
-     GESTIÓN DE PIEZAS
+     CANVAS MULTI-LÁMINA
   ============================================================ */
- 
-  /** Valida y agrega una nueva pieza al proyecto. */
+  function dibujarTodosCanvas() {
+    const cont = document.getElementById('canvasesContainer');
+    cont.innerHTML = '';
+
+    if (laminas.length === 0) {
+      cont.innerHTML = `
+        <div style="text-align:center; padding:32px 0; color:var(--muted); border:1.5px dashed var(--border); border-radius:12px;">
+          <div style="font-size:28px; opacity:0.3; margin-bottom:8px;">🪵</div>
+          <div style="font-size:12px;">Agrega piezas para ver el diagrama de corte</div>
+        </div>`;
+      actualizarStatsCanvas();
+      return;
+    }
+
+    const dpr   = window.devicePixelRatio || 1;
+    const dispW = cont.clientWidth || 340;
+    const dispH = Math.round((cfg.ancho / cfg.largo) * dispW);
+    const esc   = dispW / cfg.largo;
+
+    // Mapa de número global por (grupoId-instIdx)
+    const numMap = new Map();
+    let n = 1;
+    piezas.forEach(g => g.placements.forEach((_, ii) => { numMap.set(`${g.id}-${ii}`, n++); }));
+
+    laminas.forEach((lam, li) => {
+      // % uso de esta lámina
+      let usada = 0;
+      piezas.forEach(g => g.placements.filter(p => p.sheetIdx === li).forEach(p => usada += p.pw * p.ph));
+      const pct = Math.round((usada / (cfg.largo * cfg.ancho)) * 100);
+      const pctColor = pct > 80 ? 'var(--green)' : pct > 45 ? 'var(--accent)' : 'var(--muted)';
+
+      // Wrapper
+      const wrap = document.createElement('div');
+      wrap.className = 'lamina-wrap';
+      wrap.innerHTML = `
+        <div class="lamina-header">
+          <span>🪵 Lámina ${li + 1} de ${laminas.length}</span>
+          <span style="color:${pctColor};">${pct}% aprovechado</span>
+        </div>`;
+
+      // Canvas
+      const cv = document.createElement('canvas');
+      cv.className   = 'lamina-canvas';
+      cv.width       = Math.round(dispW * dpr);
+      cv.height      = Math.round(dispH * dpr);
+      cv.style.width  = dispW + 'px';
+      cv.style.height = dispH + 'px';
+      wrap.appendChild(cv);
+      cont.appendChild(wrap);
+
+      const ctx = cv.getContext('2d');
+      ctx.scale(dpr, dpr);
+
+      // Fondo
+      ctx.fillStyle = '#1c1610';
+      ctx.fillRect(0, 0, dispW, dispH);
+
+      // Grid cada 100 mm
+      ctx.strokeStyle = 'rgba(255,255,255,0.035)';
+      ctx.lineWidth = 0.5;
+      const paso = 100 * esc;
+      for (let x = 0; x < dispW; x += paso) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,dispH); ctx.stroke(); }
+      for (let y = 0; y < dispH; y += paso) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(dispW,y); ctx.stroke(); }
+
+      // Piezas
+      piezas.forEach(g => {
+        g.placements.forEach((pl, ii) => {
+          if (pl.sheetIdx !== li) return;
+          const px = pl.x  * esc, py = pl.y  * esc;
+          const pw = pl.pw * esc, ph = pl.ph * esc;
+          const num = numMap.get(`${g.id}-${ii}`);
+
+          ctx.fillStyle   = g.color + 'bb';
+          ctx.fillRect(px+1, py+1, pw-2, ph-2);
+          ctx.strokeStyle = g.color;
+          ctx.lineWidth   = 1.5;
+          ctx.strokeRect(px+1, py+1, pw-2, ph-2);
+
+          const fz = Math.max(8, Math.min(15, pw/4, ph/2.5));
+          const hay2 = pw > 52 && ph > 34;
+          ctx.fillStyle   = 'rgba(255,255,255,0.95)';
+          ctx.font        = `bold ${fz}px Nunito,sans-serif`;
+          ctx.textAlign   = 'center';
+          ctx.textBaseline= 'middle';
+          ctx.fillText(String(num), px+pw/2, py+ph/2 - (hay2 ? fz*0.55 : 0));
+          if (hay2) {
+            ctx.font      = `${Math.max(7,fz-3)}px Nunito,sans-serif`;
+            ctx.fillStyle = 'rgba(255,255,255,0.6)';
+            ctx.fillText(`${g.largo}×${g.ancho}`, px+pw/2, py+ph/2 + fz*0.55);
+          }
+        });
+      });
+
+      // Borde dorado
+      ctx.strokeStyle = '#e8981a';
+      ctx.lineWidth   = 2;
+      ctx.strokeRect(1, 1, dispW-2, dispH-2);
+    });
+
+    actualizarStatsCanvas();
+  }
+
+  function actualizarStatsCanvas() {
+    const totalInst = piezas.reduce((s, g) => s + g.placements.length, 0);
+    const nLam = laminas.length;
+    let pctProm = 0;
+    if (nLam > 0) {
+      const aL = cfg.largo * cfg.ancho;
+      laminas.forEach((_, li) => {
+        let u = 0;
+        piezas.forEach(g => g.placements.filter(p => p.sheetIdx === li).forEach(p => u += p.pw * p.ph));
+        pctProm += (u / aL) * 100;
+      });
+      pctProm = Math.round(pctProm / nLam);
+    }
+    document.getElementById('lblLaminas').textContent = `${nLam} lámina${nLam !== 1 ? 's' : ''}`;
+    document.getElementById('lblUso').textContent      = `${pctProm}% prom.`;
+    document.getElementById('lblDim').textContent      = `${cfg.largo} × ${cfg.ancho} mm`;
+    document.getElementById('lblCant').textContent     = `${totalInst} pieza${totalInst !== 1 ? 's' : ''}`;
+  }
+
+  /* ============================================================
+     PIEZAS
+  ============================================================ */
   function agregarPieza() {
     const label = document.getElementById('pLabel').value.trim() || 'Pieza';
     const largo = parseFloat(document.getElementById('pLargo').value);
     const ancho = parseFloat(document.getElementById('pAncho').value);
     const cant  = Math.max(1, parseInt(document.getElementById('pCant').value) || 1);
- 
-    // ——— Validaciones ———
+
     if (!largo || !ancho || largo <= 0 || ancho <= 0) {
-      mostrarToast('toastPieza', 'Ingresa dimensiones válidas (mayor a 0).', 'err');
-      return;
+      mostrarToast('toastPieza', 'Ingresa dimensiones válidas.', 'err'); return;
     }
-    if ((largo > cfg.largo && ancho > cfg.ancho) || (ancho > cfg.largo && largo > cfg.ancho)) {
-      mostrarToast('toastPieza', `La pieza (${largo}×${ancho}mm) supera las dimensiones de la lámina.`, 'err');
-      return;
+    const cabe = (largo <= cfg.largo && ancho <= cfg.ancho) ||
+                 (ancho <= cfg.largo && largo <= cfg.ancho);
+    if (!cabe) {
+      mostrarToast('toastPieza', `La pieza (${largo}×${ancho}mm) supera la lámina (${cfg.largo}×${cfg.ancho}mm).`, 'err'); return;
     }
- 
-    const areaLamina = cfg.largo * cfg.ancho;
-    const colorIdx   = piezas.length;
- 
-    const grupo = {
-      id:         Date.now(),
-      label,
-      largo,
-      ancho,
-      cant,
-      color:      COLORES[colorIdx % COLORES.length],
+
+    const aL = cfg.largo * cfg.ancho;
+    const g  = {
+      id: Date.now(), label, largo, ancho, cant,
+      color: COLORES[piezas.length % COLORES.length],
       placements: [],
-      costUnit:   (largo * ancho / areaLamina) * cfg.precioLamina,
-      costTotal:  0,
+      costUnit:  aL > 0 ? (largo * ancho / aL) * cfg.precioLamina : 0,
+      costTotal: 0,
     };
- 
-    // Intentar colocar todas las instancias
-    let colocadas = 0;
+
     for (let i = 0; i < cant; i++) {
-      const pos = buscarPosicion(largo, ancho);
-      if (pos) { grupo.placements.push(pos); colocadas++; }
-      else break;
+      let pos = null;
+      for (let li = 0; li < laminas.length; li++) {
+        pos = colocarEnLamina(laminas[li], largo, ancho);
+        if (pos) { g.placements.push({ sheetIdx: li, ...pos }); break; }
+      }
+      if (!pos) {
+        const nueva = { estantes: [] };
+        laminas.push(nueva);
+        const li = laminas.length - 1;
+        pos = colocarEnLamina(nueva, largo, ancho);
+        if (pos) g.placements.push({ sheetIdx: li, ...pos });
+      }
     }
- 
-    if (colocadas === 0) {
-      mostrarToast('toastPieza', 'No hay espacio en la lámina para esta pieza. ¿Cambiaste la configuración?', 'err');
-      return;
-    }
- 
-    if (colocadas < cant) {
-      grupo.cant = colocadas;
-      mostrarToast('toastPieza', `⚠️ Solo se acomodaron ${colocadas} de ${cant} piezas en esta lámina.`, 'warn');
-    }
- 
-    grupo.costTotal = grupo.costUnit * grupo.placements.length;
-    piezas.push(grupo);
- 
+
+    g.costTotal = g.costUnit * g.placements.length;
+    piezas.push(g);
+
     guardarPiezas();
     renderizarPiezas();
-    dibujarCanvas();
+    dibujarTodosCanvas();
     actualizarTornillos();
- 
-    // Limpiar formulario
+    calcularTotal(); // ← auto-recalcular al agregar pieza
+
     document.getElementById('pLabel').value = '';
     document.getElementById('pLargo').value = '';
     document.getElementById('pAncho').value = '';
     document.getElementById('pCant').value  = '1';
   }
- 
-  /** Elimina un grupo de piezas y reconstruye posicionamientos. */
+
   function eliminarPieza(id) {
     piezas = piezas.filter(p => p.id !== id);
     reconstruirPlacements();
     guardarPiezas();
     renderizarPiezas();
-    dibujarCanvas();
+    dibujarTodosCanvas();
     actualizarTornillos();
+    calcularTotal();
   }
- 
-  /** Elimina todas las piezas. */
+
   function limpiarPiezas() {
-    if (piezas.length === 0) return;
-    if (!confirm('¿Eliminar todas las piezas del proyecto?')) return;
-    piezas   = [];
-    estantes = [];
+    if (!piezas.length || !confirm('¿Eliminar todas las piezas?')) return;
+    piezas = []; laminas = [];
     guardarPiezas();
     renderizarPiezas();
-    dibujarCanvas();
+    dibujarTodosCanvas();
     actualizarTornillos();
+    calcularTotal();
   }
- 
-  /** Renderiza la lista de piezas en el DOM. */
+
   function renderizarPiezas() {
     const cont = document.getElementById('listaPiezas');
- 
-    if (piezas.length === 0) {
+    if (!piezas.length) {
       cont.innerHTML = `
         <div style="text-align:center; padding:28px 0; color:var(--muted);">
           <div style="font-size:32px; opacity:0.35; margin-bottom:8px;">🪵</div>
-          <div style="font-size:13px;">Aún no hay piezas agregadas</div>
-        </div>`;
-      return;
+          <div style="font-size:13px;">Sin piezas agregadas</div>
+        </div>`; return;
     }
- 
-    cont.innerHTML = piezas.map((g, i) => {
-      const tornillosGrupo = g.placements.length * cfg.tornillosXPieza;
-      return `
-      <div class="piece-row">
-        <div class="piece-dot" style="background:${g.color};"></div>
-        <div style="flex:1; min-width:0;">
-          <div style="display:flex; align-items:center; gap:6px;">
-            <span style="font-size:13px; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${i+1}. ${g.label}</span>
-            <span style="font-size:10.5px; font-weight:800; background:var(--border); color:var(--muted); border-radius:6px; padding:1px 7px; flex-shrink:0;">×${g.placements.length}</span>
+    let numG = 1;
+    cont.innerHTML = piezas.map(g => {
+      const inst  = g.placements.length;
+      const lams  = [...new Set(g.placements.map(p => p.sheetIdx + 1))].join(', ');
+      const html  = `
+        <div class="piece-row">
+          <div class="piece-dot" style="background:${g.color};"></div>
+          <div style="flex:1; min-width:0;">
+            <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+              <span style="font-size:13px; font-weight:800;">${numG}–${numG+inst-1}. ${g.label}</span>
+              <span style="font-size:10.5px; font-weight:800; background:var(--border); color:var(--muted); border-radius:6px; padding:1px 7px;">×${inst}</span>
+            </div>
+            <div style="font-size:11px; color:var(--muted); margin-top:2px;">${g.largo}×${g.ancho}mm · 🔩${inst*cfg.tornillosXPieza} · Lám.${lams}</div>
           </div>
-          <div style="font-size:11px; color:var(--muted); margin-top:2px;">${g.largo}×${g.ancho} mm · 🔩 ${tornillosGrupo}</div>
-        </div>
-        <div style="text-align:right; flex-shrink:0; margin-right:6px;">
-          <div style="font-size:14px; font-weight:800; color:var(--accent);">${fmt(g.costTotal)}</div>
-          <div style="font-size:10.5px; color:var(--muted);">${fmt(g.costUnit)}/u.</div>
-        </div>
-        <button class="btn-del" onclick="eliminarPieza(${g.id})">✕</button>
-      </div>`;
+          <div style="text-align:right; flex-shrink:0; margin-right:6px;">
+            <div style="font-size:14px; font-weight:800; color:var(--accent);">${fmt(g.costTotal)}</div>
+            <div style="font-size:10.5px; color:var(--muted);">${fmt(g.costUnit)}/u.</div>
+          </div>
+          <button class="btn-del" onclick="eliminarPieza(${g.id})">✕</button>
+        </div>`;
+      numG += inst;
+      return html;
     }).join('');
   }
- 
-  /** Actualiza el resumen de tornillos. */
+
   function actualizarTornillos() {
-    const totalInstancias = piezas.reduce((a, g) => a + g.placements.length, 0);
-    const total = totalInstancias * cfg.tornillosXPieza;
+    const total = piezas.reduce((s, g) => s + g.placements.length, 0) * cfg.tornillosXPieza;
     const el = document.getElementById('resumenTornillos');
     el.style.display = total > 0 ? 'flex' : 'none';
     document.getElementById('lblTornillos').textContent = total;
   }
- 
-  /** Guarda piezas en localStorage (sin placements, se recalculan). */
+
   function guardarPiezas() {
-    const data = piezas.map(g => ({
-      id: g.id, label: g.label, largo: g.largo, ancho: g.ancho,
-      cant: g.cant, color: g.color,
-    }));
-    localStorage.setItem('mc_piezas', JSON.stringify(data));
+    localStorage.setItem('mc_piezas', JSON.stringify(
+      piezas.map(g => ({ id:g.id, label:g.label, largo:g.largo, ancho:g.ancho, cant:g.cant, color:g.color }))
+    ));
   }
- 
-  /** Carga piezas desde localStorage. */
+
   function cargarPiezas() {
-    const saved = localStorage.getItem('mc_piezas');
-    if (!saved) return;
-    piezas = JSON.parse(saved).map(g => ({ ...g, placements: [], costUnit: 0, costTotal: 0 }));
+    const s = localStorage.getItem('mc_piezas');
+    if (!s) return;
+    piezas = JSON.parse(s).map(g => ({ ...g, placements:[], costUnit:0, costTotal:0 }));
     reconstruirPlacements();
     renderizarPiezas();
     actualizarTornillos();
   }
- 
+
   /* ============================================================
-     ACCESORIOS / HERRAJES
+     HERRAJES Y ACCESORIOS
   ============================================================ */
- 
-  /** Actualiza los subtotales de accesorios en el DOM y guarda en localStorage. */
+
+  /** Llamado por oninput en cualquier campo de herrajes */
+  function onAccChange() {
+    actualizarAccesorios();
+    calcularTotal(); // ← auto-recalcular al cambiar herraje
+  }
+
   function actualizarAccesorios() {
     const acc = leerAccesorios();
-    document.getElementById('stBisagras').textContent  = fmt(acc.bis.qty  * acc.bis.price);
-    document.getElementById('stCorrederas').textContent= fmt(acc.cor.qty  * acc.cor.price);
-    document.getElementById('stJaladores').textContent = fmt(acc.jal.qty  * acc.jal.price);
-    document.getElementById('stSoportes').textContent  = fmt(acc.sop.qty  * acc.sop.price);
-    const total = [acc.bis, acc.cor, acc.jal, acc.sop].reduce((s,a) => s + a.qty * a.price, 0);
+    document.getElementById('stBisagras').textContent   = fmt(acc.bis.qty  * acc.bis.price);
+    document.getElementById('stCorrederas').textContent = fmt(acc.cor.qty  * acc.cor.price);
+    document.getElementById('stJaladores').textContent  = fmt(acc.jal.qty  * acc.jal.price);
+    document.getElementById('stSoportes').textContent   = fmt(acc.sop.qty  * acc.sop.price);
+    document.getElementById('stFondos').textContent     = fmt(acc.fond.qty * acc.fond.price);
+
+    const totOtros = otrosAcc.reduce((s, a) => s + a.qty * a.price, 0);
+    document.getElementById('stOtrosAcc').textContent = fmt(totOtros);
+
+    const total = acc.bis.qty*acc.bis.price + acc.cor.qty*acc.cor.price +
+                  acc.jal.qty*acc.jal.price + acc.sop.qty*acc.sop.price +
+                  acc.fond.qty*acc.fond.price + totOtros;
     document.getElementById('totalHerrajes').textContent = fmt(total);
+
     localStorage.setItem('mc_accesorios', JSON.stringify(acc));
+    localStorage.setItem('mc_otros_acc',  JSON.stringify(otrosAcc));
   }
- 
-  /** Lee los valores de accesorios desde los inputs. */
+
   function leerAccesorios() {
-    const v = id => parseFloat(document.getElementById(id).value) || 0;
+    const v = id => parseFloat(document.getElementById(id)?.value) || 0;
     return {
-      bis: { qty: v('hBisQty'), price: v('hBisPrice') },
-      cor: { qty: v('hCorQty'), price: v('hCorPrice') },
-      jal: { qty: v('hJalQty'), price: v('hJalPrice') },
-      sop: { qty: v('hSopQty'), price: v('hSopPrice') },
+      bis:  { qty: v('hBisQty'),  price: v('hBisPrice')  },
+      cor:  { qty: v('hCorQty'),  price: v('hCorPrice')  },
+      jal:  { qty: v('hJalQty'),  price: v('hJalPrice')  },
+      sop:  { qty: v('hSopQty'),  price: v('hSopPrice')  },
+      fond: { qty: v('hFondQty'), price: v('hFondPrice') },
     };
   }
- 
-  /** Carga accesorios desde localStorage. */
+
   function cargarAccesorios() {
-    const saved = localStorage.getItem('mc_accesorios');
-    if (!saved) return;
-    const acc = JSON.parse(saved);
-    const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
-    setVal('hBisQty',  acc.bis?.qty);  setVal('hBisPrice',  acc.bis?.price);
-    setVal('hCorQty',  acc.cor?.qty);  setVal('hCorPrice',  acc.cor?.price);
-    setVal('hJalQty',  acc.jal?.qty);  setVal('hJalPrice',  acc.jal?.price);
-    setVal('hSopQty',  acc.sop?.qty);  setVal('hSopPrice',  acc.sop?.price);
+    const s = localStorage.getItem('mc_accesorios');
+    if (s) {
+      const acc = JSON.parse(s);
+      const sv  = (id, v) => { const el = document.getElementById(id); if(el) el.value = v || ''; };
+      sv('hBisQty',  acc.bis?.qty);  sv('hBisPrice',  acc.bis?.price);
+      sv('hCorQty',  acc.cor?.qty);  sv('hCorPrice',  acc.cor?.price);
+      sv('hJalQty',  acc.jal?.qty);  sv('hJalPrice',  acc.jal?.price);
+      sv('hSopQty',  acc.sop?.qty);  sv('hSopPrice',  acc.sop?.price);
+      sv('hFondQty', acc.fond?.qty); sv('hFondPrice', acc.fond?.price);
+    }
+    const so = localStorage.getItem('mc_otros_acc');
+    if (so) {
+      otrosAcc = JSON.parse(so);
+      const empt = document.getElementById('emptyOtros');
+      if (empt && otrosAcc.length) empt.style.display = 'none';
+      otrosAcc.forEach(a => renderOtroAccRow(a));
+    }
     actualizarAccesorios();
   }
- 
+
+  /* ——— OTROS ACCESORIOS ——— */
+  function agregarOtroAcc() {
+    const a = { id: Date.now(), nombre: '', qty: 0, price: 0 };
+    otrosAcc.push(a);
+    const empt = document.getElementById('emptyOtros');
+    if (empt) empt.style.display = 'none';
+    renderOtroAccRow(a, true);
+    actualizarAccesorios();
+  }
+
+  function renderOtroAccRow(a, focus) {
+    const cont = document.getElementById('listaOtrosAcc');
+    const row  = document.createElement('div');
+    row.className = 'acc-row';
+    row.id        = 'accRow-' + a.id;
+    row.innerHTML = `
+      <input class="inp" type="text"   style="padding:10px; font-size:14px;" placeholder="Nombre..."
+             value="${a.nombre}" oninput="updOtroAcc(${a.id},'nombre',this.value)">
+      <input class="inp" type="number" style="padding:10px 8px; font-size:14px;" placeholder="0"
+             value="${a.qty||''}" min="0" oninput="updOtroAcc(${a.id},'qty',this.value)">
+      <input class="inp" type="number" style="padding:10px 8px; font-size:14px;" placeholder="0.00"
+             value="${a.price||''}" step="0.01" min="0" oninput="updOtroAcc(${a.id},'price',this.value)">
+      <button class="btn-del" style="padding:9px 10px;" onclick="eliminarOtroAcc(${a.id})">✕</button>`;
+    cont.appendChild(row);
+    if (focus) row.querySelector('input').focus();
+  }
+
+  function updOtroAcc(id, campo, valor) {
+    const a = otrosAcc.find(x => x.id === id);
+    if (!a) return;
+    a[campo] = campo === 'nombre' ? valor : (parseFloat(valor) || 0);
+    actualizarAccesorios();
+    calcularTotal();
+  }
+
+  function eliminarOtroAcc(id) {
+    otrosAcc = otrosAcc.filter(a => a.id !== id);
+    const row = document.getElementById('accRow-' + id);
+    if (row) row.remove();
+    if (!otrosAcc.length) {
+      const empt = document.getElementById('emptyOtros');
+      if (empt) empt.style.display = '';
+    }
+    actualizarAccesorios();
+    calcularTotal();
+  }
+
   /* ============================================================
      MANO DE OBRA
   ============================================================ */
- 
-  /** Cambia el modo de cálculo de mano de obra. */
   function setModoMO(modo) {
     modoMO = modo;
     document.getElementById('modePct').classList.toggle('active',  modo === 'pct');
@@ -1104,204 +1114,169 @@
     document.getElementById('moInputFijo').style.display = modo === 'fijo' ? 'block' : 'none';
     calcularTotal();
   }
- 
+
   /* ============================================================
-     CÁLCULO DE COTIZACIÓN FINAL
+     CÁLCULO TOTAL — funciona siempre, independiente del tab activo
   ============================================================ */
- 
-  /**
-   * Calcula todos los subtotales y el total final.
-   * Devuelve un objeto con los montos calculados (usado también por abrirPDF).
-   * @returns {Object} totales
-   */
   function calcularTotal() {
     const acc = leerAccesorios();
- 
-    // 1. Melamina — suma de costos proporcionales de todas las piezas
+
+    // Melamina
     const totalMelamina = piezas.reduce((s, g) => s + g.costTotal, 0);
- 
-    // 2. Subtotal materiales
-    const stMat = totalMelamina + cfg.costoCorte;
- 
-    // 3. Tornillos
-    const instanciasTotal = piezas.reduce((s, g) => s + g.placements.length, 0);
-    const numTornillos    = instanciasTotal * cfg.tornillosXPieza;
-    const costoTornillos  = numTornillos * cfg.precioTornillo;
- 
-    // 4. Consumibles + margen 5%
-    const baseConsumibles = costoTornillos + cfg.costoPegamento;
-    const margen          = baseConsumibles * 0.05;
-    const stConsumibles   = baseConsumibles + margen;
- 
-    // 5. Herrajes
-    const totBis = acc.bis.qty * acc.bis.price;
-    const totCor = acc.cor.qty * acc.cor.price;
-    const totJal = acc.jal.qty * acc.jal.price;
-    const totSop = acc.sop.qty * acc.sop.price;
-    const stHerr = totBis + totCor + totJal + totSop;
- 
-    // 6. Base antes de mano de obra
-    const base = stMat + stConsumibles + stHerr;
- 
-    // 7. Mano de obra
+    const nLam          = laminas.length;
+    const stMat         = totalMelamina + cfg.costoCorte;
+
+    // Tornillos
+    const instTotal    = piezas.reduce((s, g) => s + g.placements.length, 0);
+    const nTornillos   = instTotal * cfg.tornillosXPieza;
+    const costoTorn    = nTornillos * cfg.precioTornillo;
+    const baseCons     = costoTorn + cfg.costoPegamento;
+    const margen       = baseCons * 0.05;
+    const stCons       = baseCons + margen;
+
+    // Herrajes
+    const tBis  = acc.bis.qty  * acc.bis.price;
+    const tCor  = acc.cor.qty  * acc.cor.price;
+    const tJal  = acc.jal.qty  * acc.jal.price;
+    const tSop  = acc.sop.qty  * acc.sop.price;
+    const tFond = acc.fond.qty * acc.fond.price;
+    const tOtros= otrosAcc.reduce((s, a) => s + a.qty * a.price, 0);
+    const stHerr= tBis + tCor + tJal + tSop + tFond + tOtros;
+
+    const base = stMat + stCons + stHerr;
+
+    // Mano de obra
     let mo = 0;
     if (modoMO === 'pct') {
-      const pct = parseFloat(document.getElementById('moPct').value) || 0;
-      mo = base * (pct / 100);
+      mo = base * ((parseFloat(document.getElementById('moPct')?.value) || 0) / 100);
     } else {
-      mo = parseFloat(document.getElementById('moFijo').value) || 0;
+      mo = parseFloat(document.getElementById('moFijo')?.value) || 0;
     }
- 
-    // 8. Total final
+
     const gran = base + mo;
- 
-    // ——— Actualizar DOM ———
-    const s = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
-    s('bdMelamina',      fmt(totalMelamina));
-    s('bdCorte',         fmt(cfg.costoCorte));
-    s('stMateriales',    fmt(stMat));
-    s('bdLblTornillos',  `Tornillos (${numTornillos} un.)`);
-    s('bdTornillos',     fmt(costoTornillos));
-    s('bdPegamento',     fmt(cfg.costoPegamento));
-    s('bdMargen',        `+${fmt(margen)}`);
-    s('stConsumibles',   fmt(stConsumibles));
-    s('bdBis',           fmt(totBis));
-    s('bdCor',           fmt(totCor));
-    s('bdJal',           fmt(totJal));
-    s('bdSop',           fmt(totSop));
-    s('stHerrajes',      fmt(stHerr));
-    s('bdManoObra',      fmt(mo));
-    s('granTotal',       fmt(gran));
- 
-    return { totalMelamina, stMat, numTornillos, costoTornillos, baseConsumibles, margen,
-             stConsumibles, totBis, totCor, totJal, totSop, stHerr, mo, gran };
+
+    // Actualizar DOM
+    const s = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = v; };
+    s('bdLblMelamina', `Material melamina (${nLam} lám.)`);
+    s('bdMelamina',    fmt(totalMelamina));
+    s('bdCorte',       fmt(cfg.costoCorte));
+    s('stMateriales',  fmt(stMat));
+    s('bdLblTornillos',`Tornillos (${nTornillos} un.)`);
+    s('bdTornillos',   fmt(costoTorn));
+    s('bdPegamento',   fmt(cfg.costoPegamento));
+    s('bdMargen',      `+${fmt(margen)}`);
+    s('stConsumibles', fmt(stCons));
+    s('bdBis',         fmt(tBis));
+    s('bdCor',         fmt(tCor));
+    s('bdJal',         fmt(tJal));
+    s('bdSop',         fmt(tSop));
+    s('bdFond',        fmt(tFond));
+    s('bdOtros',       fmt(tOtros));
+    s('stHerrajes',    fmt(stHerr));
+    s('bdManoObra',    fmt(mo));
+    s('granTotal',     fmt(gran));
+
+    return { totalMelamina, nLam, stMat, nTornillos, costoTorn, baseCons, margen,
+             stCons, tBis, tCor, tJal, tSop, tFond, tOtros, stHerr, mo, gran };
   }
- 
+
   /* ============================================================
-     EXPORTAR A PDF (window.print)
+     EXPORTAR PDF
   ============================================================ */
- 
-  /** Prepara la sección de presupuesto y llama a window.print(). */
   function abrirPDF() {
     const t   = calcularTotal();
     const acc = leerAccesorios();
- 
-    // Fecha y folio
-    const ahora  = new Date();
-    const fecha  = ahora.toLocaleDateString('es-BO', { year:'numeric', month:'long', day:'numeric' });
-    const folio  = 'MC-' + ahora.getFullYear()
-                 + String(ahora.getMonth()+1).padStart(2,'0')
-                 + String(ahora.getDate()).padStart(2,'0')
-                 + '-' + String(ahora.getTime()).slice(-4);
- 
+    const now = new Date();
+    const fecha = now.toLocaleDateString('es-BO', { year:'numeric', month:'long', day:'numeric' });
+    const folio = 'MC-' + now.getFullYear()
+                + String(now.getMonth()+1).padStart(2,'0')
+                + String(now.getDate()).padStart(2,'0')
+                + '-' + String(now.getTime()).slice(-4);
+
     const s = (id, v) => { const el = document.getElementById(id); if(el) el.innerHTML = v; };
-    s('pFolio',   folio);
-    s('pFecha',   fecha);
-    s('pCliente', document.getElementById('cCliente').value  || '—');
-    s('pProyecto',document.getElementById('cProyecto').value || '—');
-    s('pTotal',   fmt(t.gran));
- 
-    // Tabla de piezas
-    s('pPiezas', piezas.length > 0
-      ? piezas.map((g, i) => `
-          <tr>
-            <td>${i+1}</td>
+    s('pFolio',    folio);
+    s('pFecha',    fecha);
+    s('pCliente',  document.getElementById('cCliente')?.value  || '—');
+    s('pProyecto', document.getElementById('cProyecto')?.value || '—');
+    s('pTotal',    fmt(t.gran));
+
+    let numG = 1;
+    s('pPiezas', piezas.length
+      ? piezas.map(g => {
+          const h = `<tr>
+            <td>${numG}–${numG+g.placements.length-1}</td>
             <td><b>${g.label}</b></td>
-            <td>${g.largo}</td>
-            <td>${g.ancho}</td>
+            <td>${g.largo}mm</td><td>${g.ancho}mm</td>
             <td>${g.placements.length}</td>
-            <td>${fmt(g.costUnit)}</td>
-            <td><b>${fmt(g.costTotal)}</b></td>
-          </tr>`).join('')
+            <td>${fmt(g.costUnit)}</td><td><b>${fmt(g.costTotal)}</b></td>
+          </tr>`;
+          numG += g.placements.length; return h;
+        }).join('')
       : '<tr><td colspan="7" style="text-align:center;color:#aaa;padding:10px;">Sin piezas registradas</td></tr>'
     );
- 
-    // Tabla accesorios
+
     const accItems = [
-      { nombre:'Bisagras',   qty:acc.bis.qty, price:acc.bis.price },
-      { nombre:'Correderas', qty:acc.cor.qty, price:acc.cor.price },
-      { nombre:'Jaladores',  qty:acc.jal.qty, price:acc.jal.price },
-      { nombre:'Soportes',   qty:acc.sop.qty, price:acc.sop.price },
+      { nombre:'Bisagras',          qty:acc.bis.qty,  price:acc.bis.price  },
+      { nombre:'Correderas',        qty:acc.cor.qty,  price:acc.cor.price  },
+      { nombre:'Jaladores',         qty:acc.jal.qty,  price:acc.jal.price  },
+      { nombre:'Soportes',          qty:acc.sop.qty,  price:acc.sop.price  },
+      { nombre:'Láminas de Fondos', qty:acc.fond.qty, price:acc.fond.price },
+      ...otrosAcc.map(a => ({ nombre: a.nombre||'Accesorio', qty:a.qty, price:a.price })),
     ].filter(a => a.qty > 0);
- 
-    s('pAccesorios', accItems.length > 0
-      ? accItems.map(a => `
-          <tr>
-            <td>${a.nombre}</td>
-            <td>${a.qty}</td>
-            <td>${fmt(a.price)}</td>
-            <td><b>${fmt(a.qty * a.price)}</b></td>
-          </tr>`).join('')
+
+    s('pAccesorios', accItems.length
+      ? accItems.map(a => `<tr><td>${a.nombre}</td><td>${a.qty}</td><td>${fmt(a.price)}</td><td><b>${fmt(a.qty*a.price)}</b></td></tr>`).join('')
       : '<tr><td colspan="4" style="text-align:center;color:#aaa;padding:10px;">Sin accesorios</td></tr>'
     );
- 
-    // Desglose financiero
-    s('pDesglose', `
-      <tbody>
-        <tr><td style="padding:5px 0;font-size:13px;">Materiales (Melamina + Corte)</td>
-            <td style="text-align:right;font-weight:700;font-size:13px;">${fmt(t.stMat)}</td></tr>
-        <tr><td style="padding:5px 0;font-size:13px;">Tornillos y Pegamentos (incl. +5% margen)</td>
-            <td style="text-align:right;font-weight:700;font-size:13px;">${fmt(t.stConsumibles)}</td></tr>
-        <tr><td style="padding:5px 0;font-size:13px;">Herrajes y Accesorios</td>
-            <td style="text-align:right;font-weight:700;font-size:13px;">${fmt(t.stHerr)}</td></tr>
-        <tr><td style="padding:5px 0;font-size:13px;">Mano de Obra / Utilidad</td>
-            <td style="text-align:right;font-weight:700;font-size:13px;">${fmt(t.mo)}</td></tr>
-      </tbody>
-    `);
- 
+
+    s('pDesglose', `<tbody>
+      <tr><td style="padding:5px 0;font-size:13px;">Melamina (${t.nLam} láminas)</td>
+          <td style="text-align:right;font-weight:700;font-size:13px;">${fmt(t.totalMelamina)}</td></tr>
+      <tr><td style="padding:5px 0;font-size:13px;">Hoja de corte / Servicio</td>
+          <td style="text-align:right;font-weight:700;font-size:13px;">${fmt(cfg.costoCorte)}</td></tr>
+      <tr><td style="padding:5px 0;font-size:13px;">Tornillos y Consumibles (+5% margen)</td>
+          <td style="text-align:right;font-weight:700;font-size:13px;">${fmt(t.stCons)}</td></tr>
+      <tr><td style="padding:5px 0;font-size:13px;">Herrajes y Accesorios</td>
+          <td style="text-align:right;font-weight:700;font-size:13px;">${fmt(t.stHerr)}</td></tr>
+      <tr><td style="padding:5px 0;font-size:13px;">Mano de Obra / Utilidad</td>
+          <td style="text-align:right;font-weight:700;font-size:13px;">${fmt(t.mo)}</td></tr>
+    </tbody>`);
+
     window.print();
   }
- 
+
   /* ============================================================
      UTILIDADES
   ============================================================ */
- 
-  /**
-   * Formatea un número como moneda con símbolo $.
-   * @param {number} n
-   * @returns {string}
-   */
   function fmt(n) {
     const abs = Math.abs(n || 0).toFixed(2);
-    const [entero, dec] = abs.split('.');
-    const miles = entero.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    return (n < 0 ? '-' : '') + 'Bs. ' + miles + '.' + dec;
+    const [ent, dec] = abs.split('.');
+    return (n < 0 ? '-' : '') + 'Bs. ' + ent.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '.' + dec;
   }
- 
-  /**
-   * Muestra un toast temporal en el contenedor indicado.
-   * @param {string} containerId
-   * @param {string} msg
-   * @param {'ok'|'err'|'warn'} tipo
-   */
-  function mostrarToast(containerId, msg, tipo) {
-    const cont = document.getElementById(containerId);
-    if (!cont) return;
-    cont.innerHTML = `<div class="toast toast-${tipo}">${msg}</div>`;
-    setTimeout(() => { cont.innerHTML = ''; }, tipo === 'err' ? 5000 : 2800);
+
+  function mostrarToast(cid, msg, tipo) {
+    const el = document.getElementById(cid);
+    if (!el) return;
+    el.innerHTML = `<div class="toast toast-${tipo}">${msg}</div>`;
+    setTimeout(() => { el.innerHTML = ''; }, tipo === 'err' ? 5000 : 2800);
   }
- 
+
   /* ============================================================
-     INICIALIZACIÓN
+     INIT
   ============================================================ */
- 
-  /** Inicializa la aplicación: carga datos y dibuja el canvas. */
   function init() {
     cargarConfig();
     cargarPiezas();
     cargarAccesorios();
-    dibujarCanvas();
- 
-    // Redibujar canvas al rotar/cambiar tamaño
+    dibujarTodosCanvas();
+    calcularTotal();
     window.addEventListener('resize', () => {
-      if (document.getElementById('panel-piezas').classList.contains('active')) {
-        dibujarCanvas();
-      }
+      if (document.getElementById('panel-piezas').classList.contains('active'))
+        dibujarTodosCanvas();
     });
   }
- 
+
   document.addEventListener('DOMContentLoaded', init);
 </script>
- 
 </body>
 </html>
