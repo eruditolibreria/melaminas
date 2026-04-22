@@ -593,6 +593,7 @@
 
       <!-- El onclick llama directamente a calcularTotal() — es lo que lo hace funcionar -->
       <button class="btn-sub" style="width:100%;" onclick="calcularTotal()">🔄 Recalcular Todo</button>
+      <button class="btn-sub" style="width:100%; margin-top:0; border-color:var(--red); color:var(--red);" onclick="reiniciarTodo()">🗑️ Borrar y Comenzar de Nuevo</button>
       <button class="btn-main" onclick="abrirPDF()">📄 Exportar Presupuesto PDF</button>
 
     </div>
@@ -1261,6 +1262,49 @@
     setTimeout(() => { el.innerHTML = ''; }, tipo === 'err' ? 5000 : 2800);
   }
 
+/* Borra todos los datos y reinicia la app desde cero */
+function reiniciarTodo() {
+  if (!confirm('⚠️ ¿Estás seguro?\n\nSe borrarán todas las piezas, herrajes y accesorios del proyecto actual.\n\nLa configuración de la lámina (dimensiones y precios) se conservará.')) return;
+
+  // Limpiar estado en memoria
+  piezas   = [];
+  laminas  = [];
+  otrosAcc = [];
+
+  // Limpiar localStorage (solo datos del proyecto, no la config)
+  localStorage.removeItem('mc_piezas');
+  localStorage.removeItem('mc_accesorios');
+  localStorage.removeItem('mc_otros_acc');
+
+  // Resetear campos de herrajes a 0
+  ['hBisQty','hBisPrice','hCorQty','hCorPrice',
+   'hJalQty','hJalPrice','hSopQty','hSopPrice',
+   'hFondQty','hFondPrice'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+
+  // Limpiar filas de otros accesorios del DOM
+  const listaOtros = document.getElementById('listaOtrosAcc');
+  if (listaOtros) listaOtros.innerHTML =
+    '<div id="emptyOtros" style="text-align:center; padding:12px 0; color:var(--muted); font-size:12px;">Sin accesorios extra</div>';
+
+  // Limpiar datos del cliente
+  ['cCliente','cProyecto'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+
+  // Actualizar toda la interfaz
+  renderizarPiezas();
+  dibujarTodosCanvas();
+  actualizarTornillos();
+  actualizarAccesorios();
+  calcularTotal();
+
+  // Volver al tab de piezas para empezar
+  irTab('piezas');
+}
   /* ============================================================
      INIT
   ============================================================ */
